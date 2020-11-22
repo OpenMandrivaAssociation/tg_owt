@@ -8,14 +8,12 @@
 
 Name: tg_owt
 Version: 0
-Release: 3.%{date}git%{shortcommit0}%{?dist}
+Release: 3.%{date}git%{shortcommit0}
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
 # libsrtp - BSD
-# libwebm - BSD
 # libyuv - BSD
-# openh264 - BSD
 # pffft - BSD
 # rnnoise - BSD
 # usrsctp - BSD
@@ -23,6 +21,9 @@ License: BSD and ASL 2.0
 Summary: WebRTC library for the Telegram messenger
 URL: https://github.com/desktop-app/%{name}
 Source0: %{url}/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
+
+# Use system libvpx and libopenh264
+Patch0: tg_owt-system-libvpx.patch
 
 BuildRequires: pkgconfig(alsa)
 BuildRequires: pkgconfig(libavcodec)
@@ -35,13 +36,12 @@ BuildRequires: pkgconfig(libswscale)
 BuildRequires: pkgconfig(openssl)
 BuildRequires: pkgconfig(opus)
 BuildRequires: pkgconfig(protobuf)
+BuildRequires: pkgconfig(openh264)
+BuildRequires: pkgconfig(vpx)
 
 BuildRequires: cmake
 BuildRequires: ninja
 BuildRequires: yasm
-
-# Disabling all low-memory architectures.
-ExclusiveArch: %{x86_64} aarch64 riscv64
 
 %description
 Special fork of the OpenWebRTC library for the Telegram messenger.
@@ -57,10 +57,7 @@ Provides: bundled(g711) = 0~git
 Provides: bundled(g722) = 0~git
 Provides: bundled(libevent) = 1.4.15
 Provides: bundled(libsrtp) = 2.2.0~git94ac00d
-Provides: bundled(libvpx) = 1.8.2~git667138e
-Provides: bundled(libwebm) = 0~git
 Provides: bundled(libyuv) = 0~svn1741
-Provides: bundled(openh264) = 1.10.0~git6f26bce
 Provides: bundled(pffft) = 0~git483453d
 Provides: bundled(portaudio) = 0~git
 Provides: bundled(rnnoise) = 0~git91ef40
@@ -94,29 +91,23 @@ Requires: pkgconfig(opus)
 
 %prep
 %autosetup -n %{name}-%{commit0} -p1
+# Make sure nothing pulls in superfluous bundled libraries
+rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/libopenh264.cmake
 
 mkdir legal
 cp -f -p src/third_party/abseil-cpp/LICENSE legal/LICENSE.abseil-cpp
 cp -f -p src/third_party/abseil-cpp/README.chromium legal/README.abseil-cpp
 cp -f -p src/third_party/libsrtp/LICENSE legal/LICENSE.libsrtp
 cp -f -p src/third_party/libsrtp/README.chromium legal/README.libsrtp
-cp -f -p src/third_party/libvpx/source/libvpx/LICENSE legal/LICENSE.libvpx
-cp -f -p src/third_party/libvpx/source/libvpx/PATENTS legal/PATENTS.libvpx
-cp -f -p src/third_party/libvpx/README.chromium legal/README.libvpx
 cp -f -p src/third_party/libyuv/LICENSE legal/LICENSE.libyuv
 cp -f -p src/third_party/libyuv/PATENTS legal/PATENTS.libyuv
 cp -f -p src/third_party/libyuv/README.chromium legal/README.libyuv
-cp -f -p src/third_party/openh264/src/LICENSE legal/LICENSE.openh264
-cp -f -p src/third_party/openh264/README.chromium legal/README.openh264
 cp -f -p src/third_party/pffft/LICENSE legal/LICENSE.pffft
 cp -f -p src/third_party/pffft/README.chromium legal/README.pffft
 cp -f -p src/third_party/rnnoise/COPYING legal/LICENSE.rnnoise
 cp -f -p src/third_party/rnnoise/README.chromium legal/README.rnnoise
 cp -f -p src/third_party/usrsctp/LICENSE legal/LICENSE.usrsctp
 cp -f -p src/third_party/usrsctp/README.chromium legal/README.usrsctp
-cp -f -p src/third_party/libvpx/source/libvpx/third_party/libwebm/LICENSE.TXT legal/LICENSE.libwebm
-cp -f -p src/third_party/libvpx/source/libvpx/third_party/libwebm/PATENTS.TXT legal/PATENTS.libwebm
-cp -f -p src/third_party/libvpx/source/libvpx/third_party/libwebm/README.libvpx legal/README.libwebm
 cp -f -p src/base/third_party/libevent/LICENSE legal/LICENSE.libevent
 cp -f -p src/base/third_party/libevent/README.chromium legal/README.libevent
 cp -f -p src/common_audio/third_party/fft4g/LICENSE legal/LICENSE.fft4g
