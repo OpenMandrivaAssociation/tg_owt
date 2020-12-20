@@ -1,6 +1,6 @@
-%global commit0 10b988aa9111fd25358443ac34d0d422b5108029
+%global commit0 6eaebec41b34a0a0d98f02892d0cfe6bbcbc0a39
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20201112
+%global date 20201219
 
 %define major 0
 %define libname %mklibname %{name} %{major}
@@ -38,6 +38,7 @@ BuildRequires: pkgconfig(opus)
 BuildRequires: pkgconfig(protobuf)
 BuildRequires: pkgconfig(openh264)
 BuildRequires: pkgconfig(vpx)
+BuildRequires: pkgconfig(libyuv)
 
 BuildRequires: cmake
 BuildRequires: ninja
@@ -57,7 +58,6 @@ Provides: bundled(g711) = 0~git
 Provides: bundled(g722) = 0~git
 Provides: bundled(libevent) = 1.4.15
 Provides: bundled(libsrtp) = 2.2.0~git94ac00d
-Provides: bundled(libyuv) = 0~svn1741
 Provides: bundled(pffft) = 0~git483453d
 Provides: bundled(portaudio) = 0~git
 Provides: bundled(rnnoise) = 0~git91ef40
@@ -94,39 +94,6 @@ Requires: pkgconfig(opus)
 # Make sure nothing pulls in superfluous bundled libraries
 rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/libopenh264.cmake
 
-mkdir legal
-cp -f -p src/third_party/abseil-cpp/LICENSE legal/LICENSE.abseil-cpp
-cp -f -p src/third_party/abseil-cpp/README.chromium legal/README.abseil-cpp
-cp -f -p src/third_party/libsrtp/LICENSE legal/LICENSE.libsrtp
-cp -f -p src/third_party/libsrtp/README.chromium legal/README.libsrtp
-cp -f -p src/third_party/libyuv/LICENSE legal/LICENSE.libyuv
-cp -f -p src/third_party/libyuv/PATENTS legal/PATENTS.libyuv
-cp -f -p src/third_party/libyuv/README.chromium legal/README.libyuv
-cp -f -p src/third_party/pffft/LICENSE legal/LICENSE.pffft
-cp -f -p src/third_party/pffft/README.chromium legal/README.pffft
-cp -f -p src/third_party/rnnoise/COPYING legal/LICENSE.rnnoise
-cp -f -p src/third_party/rnnoise/README.chromium legal/README.rnnoise
-cp -f -p src/third_party/usrsctp/LICENSE legal/LICENSE.usrsctp
-cp -f -p src/third_party/usrsctp/README.chromium legal/README.usrsctp
-cp -f -p src/base/third_party/libevent/LICENSE legal/LICENSE.libevent
-cp -f -p src/base/third_party/libevent/README.chromium legal/README.libevent
-cp -f -p src/common_audio/third_party/fft4g/LICENSE legal/LICENSE.fft4g
-cp -f -p src/common_audio/third_party/fft4g/README.chromium legal/README.fft4g
-cp -f -p src/common_audio/third_party/spl_sqrt_floor/LICENSE legal/LICENSE.spl_sqrt_floor
-cp -f -p src/common_audio/third_party/spl_sqrt_floor/README.chromium legal/README.spl_sqrt_floor
-cp -f -p src/modules/third_party/fft/LICENSE legal/LICENSE.fft
-cp -f -p src/modules/third_party/fft/README.chromium legal/README.fft
-cp -f -p src/modules/third_party/g711/LICENSE legal/LICENSE.g711
-cp -f -p src/modules/third_party/g711/README.chromium legal/README.g711
-cp -f -p src/modules/third_party/g722/LICENSE legal/LICENSE.g722
-cp -f -p src/modules/third_party/g722/README.chromium legal/README.g722
-cp -f -p src/modules/third_party/portaudio/LICENSE legal/LICENSE.portaudio
-cp -f -p src/modules/third_party/portaudio/README.chromium legal/README.portaudio
-cp -f -p src/rtc_base/third_party/base64/LICENSE legal/LICENSE.base64
-cp -f -p src/rtc_base/third_party/base64/README.chromium legal/README.base64
-cp -f -p src/rtc_base/third_party/sigslot/LICENSE legal/LICENSE.sigslot
-cp -f -p src/rtc_base/third_party/sigslot/README.chromium legal/README.sigslot
-
 %build
 # CMAKE_BUILD_TYPE should always be Release due to some hardcoded checks.
 %cmake -G Ninja \
@@ -144,8 +111,8 @@ cp -f -p src/rtc_base/third_party/sigslot/README.chromium legal/README.sigslot
 %{_libdir}/lib%{name}.so.0*
 
 %files -n %{devname}
-%doc src/AUTHORS src/OWNERS legal/README.*
-%license LICENSE src/PATENTS legal/LICENSE.* legal/PATENTS.*
+%doc src/AUTHORS src/OWNERS
+%license LICENSE src/PATENTS
 %{_includedir}/%{name}
 %{_libdir}/cmake/%{name}
 %{_libdir}/lib%{name}.so
