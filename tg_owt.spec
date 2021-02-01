@@ -1,6 +1,7 @@
-%global commit0 6eaebec41b34a0a0d98f02892d0cfe6bbcbc0a39
+%global commit0 be23804afce3bb2e80a1d57a7c1318c71b82b7de
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20201219
+%global date 20210201
+%global _disable_ld_no_undefined %nil
 
 %define major 0
 %define libname %mklibname %{name} %{major}
