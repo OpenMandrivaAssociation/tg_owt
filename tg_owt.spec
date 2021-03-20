@@ -1,6 +1,6 @@
-%global commit0 be23804afce3bb2e80a1d57a7c1318c71b82b7de
+%global commit0 2d804d2c9c5d05324c8ab22f2e6ff8306521b3c3
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20210201
+%global date 20210320
 %global _disable_ld_no_undefined %nil
 
 %define major 0

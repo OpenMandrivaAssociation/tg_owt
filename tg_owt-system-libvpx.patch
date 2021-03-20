@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 7a5bb2c..bbc57d6 100644
+index c591825..7063eeb 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -50,14 +50,11 @@ include(cmake/init_target.cmake)
+@@ -54,14 +54,11 @@ include(cmake/init_target.cmake)
  include(cmake/target_yasm_sources.cmake)
  include(cmake/external.cmake)
  include(cmake/libabsl.cmake)
@@ -17,7 +17,7 @@ index 7a5bb2c..bbc57d6 100644
  if (NOT WIN32 AND NOT APPLE)
      include(cmake/libevent.cmake)
  endif()
-@@ -84,19 +81,13 @@ if (is_x86 OR is_x64)
+@@ -88,19 +85,13 @@ if (is_x86 OR is_x64)
          tg_owt::tg_owt_avx2
          tg_owt::tg_owt_sse2
          tg_owt::libabsl
@@ -40,7 +40,7 @@ index 7a5bb2c..bbc57d6 100644
      )
  else()
      target_link_libraries(tg_owt
-@@ -104,13 +95,13 @@ else()
+@@ -108,13 +99,13 @@ else()
          tg_owt::libwebrtcbuild
      PRIVATE
          tg_owt::libabsl
@@ -57,7 +57,7 @@ index 7a5bb2c..bbc57d6 100644
      )
  endif()
  
-@@ -121,12 +112,6 @@ if (TG_OWT_USE_PROTOBUF)
+@@ -125,12 +116,6 @@ if (TG_OWT_USE_PROTOBUF)
      )
  endif()
  
@@ -70,7 +70,7 @@ index 7a5bb2c..bbc57d6 100644
  if (NOT WIN32 AND NOT APPLE)
      target_link_libraries(tg_owt PRIVATE tg_owt::libevent)
  endif()
-@@ -2131,18 +2116,6 @@ elseif (APPLE)
+@@ -2124,18 +2109,6 @@ elseif (APPLE)
      )
  endif()
  
@@ -89,7 +89,7 @@ index 7a5bb2c..bbc57d6 100644
  set(tg_owt_export tg_owt)
  if (is_x86 OR is_x64)
      set(tg_owt_export
-@@ -2155,15 +2128,11 @@ endif()
+@@ -2148,15 +2121,11 @@ endif()
  set(export_targets
      ${tg_owt_export}
      libabsl
@@ -104,9 +104,9 @@ index 7a5bb2c..bbc57d6 100644
 -    libyuv
      ${platform_export}
  )
- 
+ if (TG_OWT_USE_PROTOBUF)
 diff --git a/cmake/libwebrtcbuild.cmake b/cmake/libwebrtcbuild.cmake
-index d79049e..af2ced2 100644
+index 69ad78f..f2d1499 100644
 --- a/cmake/libwebrtcbuild.cmake
 +++ b/cmake/libwebrtcbuild.cmake
 @@ -4,7 +4,7 @@ add_library(tg_owt::libwebrtcbuild ALIAS libwebrtcbuild)
@@ -150,6 +150,21 @@ index 2a52217..b9befbb 100644
  
  // Aligning pointer to 64 bytes for improved performance, e.g. use SIMD.
  static const int kBufferAlignment = 64;
+diff --git a/src/api/video/nv12_buffer.cc b/src/api/video/nv12_buffer.cc
+index cfa85ac..fa06f6f 100644
+--- a/src/api/video/nv12_buffer.cc
++++ b/src/api/video/nv12_buffer.cc
+@@ -13,8 +13,8 @@
+ #include "api/video/i420_buffer.h"
+ #include "rtc_base/checks.h"
+ #include "rtc_base/ref_counted_object.h"
+-#include "third_party/libyuv/include/libyuv/convert.h"
+-#include "third_party/libyuv/include/libyuv/scale.h"
++#include "libyuv/convert.h"
++#include "libyuv/scale.h"
+ 
+ namespace webrtc {
+ 
 diff --git a/src/common_video/libyuv/libyuv_unittest.cc b/src/common_video/libyuv/libyuv_unittest.cc
 index 62d9e87..a70fd25 100644
 --- a/src/common_video/libyuv/libyuv_unittest.cc
@@ -189,6 +204,19 @@ index 8bbe7c8..c924734 100644
  
  namespace webrtc {
  
+diff --git a/src/modules/desktop_capture/desktop_frame_rotation.cc b/src/modules/desktop_capture/desktop_frame_rotation.cc
+index 5e9928d..c3c31dd 100644
+--- a/src/modules/desktop_capture/desktop_frame_rotation.cc
++++ b/src/modules/desktop_capture/desktop_frame_rotation.cc
+@@ -11,7 +11,7 @@
+ #include "modules/desktop_capture/desktop_frame_rotation.h"
+ 
+ #include "rtc_base/checks.h"
+-#include "third_party/libyuv/include/libyuv/rotate_argb.h"
++#include "libyuv/rotate_argb.h"
+ 
+ namespace webrtc {
+ 
 diff --git a/src/modules/video_capture/video_capture_impl.cc b/src/modules/video_capture/video_capture_impl.cc
 index 6619d15..562ce96 100644
 --- a/src/modules/video_capture/video_capture_impl.cc
@@ -215,6 +243,19 @@ index bedb519..830a903 100644
  
  namespace webrtc {
  namespace {
+diff --git a/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc b/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc
+index 6110557..9b64b17 100644
+--- a/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc
++++ b/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc
+@@ -36,7 +36,7 @@ extern "C" {
+ #include "rtc_base/logging.h"
+ #include "system_wrappers/include/field_trial.h"
+ #include "system_wrappers/include/metrics.h"
+-#include "third_party/libyuv/include/libyuv/convert.h"
++#include "libyuv/convert.h"
+ 
+ namespace webrtc {
+ 
 diff --git a/src/modules/video_coding/codecs/h264/h264_encoder_impl.cc b/src/modules/video_coding/codecs/h264/h264_encoder_impl.cc
 index ccf0bc5..18f6bc9 100644
 --- a/src/modules/video_coding/codecs/h264/h264_encoder_impl.cc
@@ -292,6 +333,32 @@ index 7713a0d..006a482 100644
  #include "vpx/vp8cx.h"
  
  namespace webrtc {
+diff --git a/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc b/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc
+index 45e0a0b..4da9c6f 100644
+--- a/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc
++++ b/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc
+@@ -24,7 +24,7 @@
+ #include "rtc_base/checks.h"
+ #include "rtc_base/keep_ref_until_done.h"
+ #include "rtc_base/logging.h"
+-#include "third_party/libyuv/include/libyuv/convert.h"
++#include "libyuv/convert.h"
+ #include "vpx/vp8dx.h"
+ #include "vpx/vpx_decoder.h"
+ 
+diff --git a/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc b/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc
+index 0e3991b..d149c75 100644
+--- a/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc
++++ b/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc
+@@ -38,7 +38,7 @@
+ #include "rtc_base/strings/string_builder.h"
+ #include "rtc_base/time_utils.h"
+ #include "rtc_base/trace_event.h"
+-#include "third_party/libyuv/include/libyuv/convert.h"
++#include "libyuv/convert.h"
+ #include "vpx/vp8cx.h"
+ #include "vpx/vpx_encoder.h"
+ 
 diff --git a/src/modules/video_processing/video_denoiser.cc b/src/modules/video_processing/video_denoiser.cc
 index 1d844e6..90659ee 100644
 --- a/src/modules/video_processing/video_denoiser.cc
@@ -350,70 +417,3 @@ index e812bc9..a15f5b3 100644
  
  namespace webrtc {
  namespace jni {
-diff --git a/src/api/video/nv12_buffer.cc b/src/api/video/nv12_buffer.cc
-index cfa85ac..fa06f6f 100644
---- a/src/api/video/nv12_buffer.cc
-+++ b/src/api/video/nv12_buffer.cc
-@@ -13,8 +13,8 @@
- #include "api/video/i420_buffer.h"
- #include "rtc_base/checks.h"
- #include "rtc_base/ref_counted_object.h"
--#include "third_party/libyuv/include/libyuv/convert.h"
--#include "third_party/libyuv/include/libyuv/scale.h"
-+#include "libyuv/convert.h"
-+#include "libyuv/scale.h"
- 
- namespace webrtc {
- 
-diff --git a/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc b/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc
-index 45e0a0b..4da9c6f 100644
---- a/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc
-+++ b/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc
-@@ -24,7 +24,7 @@
- #include "rtc_base/checks.h"
- #include "rtc_base/keep_ref_until_done.h"
- #include "rtc_base/logging.h"
--#include "third_party/libyuv/include/libyuv/convert.h"
-+#include "libyuv/convert.h"
- #include "vpx/vp8dx.h"
- #include "vpx/vpx_decoder.h"
- 
-diff --git a/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc b/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc
-index 0e3991b..d149c75 100644
---- a/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc
-+++ b/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc
-@@ -38,7 +38,7 @@
- #include "rtc_base/strings/string_builder.h"
- #include "rtc_base/time_utils.h"
- #include "rtc_base/trace_event.h"
--#include "third_party/libyuv/include/libyuv/convert.h"
-+#include "libyuv/convert.h"
- #include "vpx/vp8cx.h"
- #include "vpx/vpx_encoder.h"
- 
-diff --git a/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc b/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc
-index 6110557..9b64b17 100644
---- a/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc
-+++ b/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc
-@@ -36,7 +36,7 @@ extern "C" {
- #include "rtc_base/logging.h"
- #include "system_wrappers/include/field_trial.h"
- #include "system_wrappers/include/metrics.h"
--#include "third_party/libyuv/include/libyuv/convert.h"
-+#include "libyuv/convert.h"
- 
- namespace webrtc {
- 
-diff --git a/src/modules/desktop_capture/desktop_frame_rotation.cc b/src/modules/desktop_capture/desktop_frame_rotation.cc
-index 5e9928d..c3c31dd 100644
---- a/src/modules/desktop_capture/desktop_frame_rotation.cc
-+++ b/src/modules/desktop_capture/desktop_frame_rotation.cc
-@@ -11,7 +11,7 @@
- #include "modules/desktop_capture/desktop_frame_rotation.h"
- 
- #include "rtc_base/checks.h"
--#include "third_party/libyuv/include/libyuv/rotate_argb.h"
-+#include "libyuv/rotate_argb.h"
- 
- namespace webrtc {
- 
