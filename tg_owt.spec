@@ -41,6 +41,15 @@ BuildRequires: pkgconfig(openh264)
 BuildRequires: pkgconfig(vpx)
 BuildRequires: pkgconfig(libyuv)
 BuildRequires: pkgconfig(rnnoise)
+BuildRequires: pkgconfig(libevent)
+BuildRequires: pkgconfig(x11)
+BuildRequires: pkgconfig(xcomposite)
+BuildRequires: pkgconfig(xdamage)
+BuildRequires: pkgconfig(xext)
+BuildRequires: pkgconfig(xfixes)
+BuildRequires: pkgconfig(xrender)
+BuildRequires: pkgconfig(xrandr)
+BuildRequires: pkgconfig(xtst)
 BuildRequires: cmake(absl)
 
 BuildRequires: cmake
@@ -53,17 +62,14 @@ Special fork of the OpenWebRTC library for the Telegram messenger.
 #################################################
 
 %package -n %{libname}
-Provides: bundled(abseil-cpp) = 0~gitfba8a31
 Provides: bundled(base64) = 0~git
 Provides: bundled(fft) = 0~git
 Provides: bundled(fft4g) = 0~git
 Provides: bundled(g711) = 0~git
 Provides: bundled(g722) = 0~git
-Provides: bundled(libevent) = 1.4.15
 Provides: bundled(libsrtp) = 2.2.0~git94ac00d
 Provides: bundled(pffft) = 0~git483453d
 Provides: bundled(portaudio) = 0~git
-Provides: bundled(rnnoise) = 0~git91ef40
 Provides: bundled(sigslot) = 0~git
 Provides: bundled(spl_sqrt_floor) = 0~git
 Provides: bundled(usrsctp) = 1.0.0~gitbee946a
@@ -78,16 +84,31 @@ Group:		System/Libraries
 %package -n %{devname}
 Summary: Development files for %{name}
 Requires: %{libname} = %{EVRD}
-Requires: pkgconfig(alsa)
-Requires: pkgconfig(libavcodec)
-Requires: pkgconfig(libavformat)
-Requires: pkgconfig(libavresample)
-Requires: pkgconfig(libavutil)
-Requires: pkgconfig(libjpeg)
-Requires: pkgconfig(libpulse)
-Requires: pkgconfig(libswscale)
-Requires: pkgconfig(openssl)
-Requires: pkgconfig(opus)
+BuildRequires: pkgconfig(alsa)
+BuildRequires: pkgconfig(libavcodec)
+BuildRequires: pkgconfig(libavformat)
+BuildRequires: pkgconfig(libavresample)
+BuildRequires: pkgconfig(libavutil)
+BuildRequires: pkgconfig(libjpeg)
+BuildRequires: pkgconfig(libpulse)
+BuildRequires: pkgconfig(libswscale)
+BuildRequires: pkgconfig(openssl)
+BuildRequires: pkgconfig(opus)
+BuildRequires: pkgconfig(protobuf)
+BuildRequires: pkgconfig(openh264)
+BuildRequires: pkgconfig(vpx)
+BuildRequires: pkgconfig(libyuv)
+BuildRequires: pkgconfig(rnnoise)
+BuildRequires: pkgconfig(libevent)
+BuildRequires: pkgconfig(x11)
+BuildRequires: pkgconfig(xcomposite)
+BuildRequires: pkgconfig(xdamage)
+BuildRequires: pkgconfig(xext)
+BuildRequires: pkgconfig(xfixes)
+BuildRequires: pkgconfig(xrender)
+BuildRequires: pkgconfig(xrandr)
+BuildRequires: pkgconfig(xtst)
+BuildRequires: cmake(absl)
 
 %description -n %{devname}
 %{summary}.
