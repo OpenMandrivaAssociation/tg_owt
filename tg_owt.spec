@@ -1,6 +1,6 @@
-%global commit0 18cb4cd9bb4c2f5f5f5e760ec808f74c302bc1bf
+%global commit0 f03ef05abf665437649a4f71886db1343590e862
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20210501
+%global date 20210621
 %global _disable_ld_no_undefined %nil
 
 %define major 0
@@ -40,6 +40,8 @@ BuildRequires: pkgconfig(protobuf)
 BuildRequires: pkgconfig(openh264)
 BuildRequires: pkgconfig(vpx)
 BuildRequires: pkgconfig(libyuv)
+BuildRequires: pkgconfig(rnnoise)
+BuildRequires: cmake(absl)
 
 BuildRequires: cmake
 BuildRequires: ninja
@@ -93,7 +95,7 @@ Requires: pkgconfig(opus)
 %prep
 %autosetup -n %{name}-%{commit0} -p1
 # Make sure nothing pulls in superfluous bundled libraries
-rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/libopenh264.cmake
+rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/libopenh264.cmake src/third_party/libyuv cmake/libyuv.cmake
 
 %build
 # CMAKE_BUILD_TYPE should always be Release due to some hardcoded checks.
