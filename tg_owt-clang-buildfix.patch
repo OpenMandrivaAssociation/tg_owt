@@ -1,0 +1,12 @@
+diff -up tg_owt-d5c3d43b959c7e9e7d8004b9b7fdadd12ce7d589/src/modules/congestion_controller/goog_cc/loss_based_bwe_v2.cc.omv~ tg_owt-d5c3d43b959c7e9e7d8004b9b7fdadd12ce7d589/src/modules/congestion_controller/goog_cc/loss_based_bwe_v2.cc
+--- tg_owt-d5c3d43b959c7e9e7d8004b9b7fdadd12ce7d589/src/modules/congestion_controller/goog_cc/loss_based_bwe_v2.cc.omv~	2021-12-12 02:27:55.179399225 +0100
++++ tg_owt-d5c3d43b959c7e9e7d8004b9b7fdadd12ce7d589/src/modules/congestion_controller/goog_cc/loss_based_bwe_v2.cc	2021-12-12 02:34:40.680544979 +0100
+@@ -285,7 +285,7 @@ absl::optional<LossBasedBweV2::Config> L
+   if (!enabled.Get()) {
+     return config;
+   }
+-  config.emplace();
++  config.emplace(Config());
+   config->bandwidth_rampup_upper_bound_factor =
+       bandwidth_rampup_upper_bound_factor.Get();
+   config->candidate_factors = candidate_factors.Get();

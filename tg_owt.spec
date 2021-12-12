@@ -1,6 +1,6 @@
-%global commit0 91d836dc84a16584c6ac52b36c04c0de504d9c34
+%global commit0 d5c3d43b959c7e9e7d8004b9b7fdadd12ce7d589
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20210706
+%global date 20211212
 %global _disable_ld_no_undefined %nil
 
 %define major 0
@@ -25,6 +25,7 @@ Source0: %{url}/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
 
 # Use system libvpx and libopenh264
 Patch0: tg_owt-system-libvpx.patch
+Patch1: tg_owt-clang-buildfix.patch
 
 BuildRequires: pkgconfig(alsa)
 BuildRequires: pkgconfig(libavcodec)
