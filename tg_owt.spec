@@ -9,7 +9,7 @@
 
 Name: tg_owt
 Version: 0
-Release: 3.%{date}git%{shortcommit0}
+Release: 4.%{date}git%{shortcommit0}
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
@@ -22,10 +22,12 @@ License: BSD and ASL 2.0
 Summary: WebRTC library for the Telegram messenger
 URL: https://github.com/desktop-app/%{name}
 Source0: %{url}/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
+Source1: https://github.com/google/crc32c/archive/refs/tags/1.1.2.tar.gz
 
 # Use system libvpx and libopenh264
 Patch0: tg_owt-system-libvpx.patch
 Patch1: tg_owt-clang-buildfix.patch
+Patch2: tg_owt-unresolved-symbols.patch
 
 BuildRequires: pkgconfig(alsa)
 BuildRequires: pkgconfig(libavcodec)
@@ -117,9 +119,15 @@ Requires: cmake(absl)
 %{summary}.
 
 %prep
-%autosetup -n %{name}-%{commit0} -p1
+%autosetup -n %{name}-%{commit0} -p1 -a 1
 # Make sure nothing pulls in superfluous bundled libraries
 rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/libopenh264.cmake src/third_party/libyuv cmake/libyuv.cmake
+# But add the used but not bundled library
+mkdir -p src/third_party/crc32c
+mv crc32c-1.1.2 src/third_party/crc32c/src
+cd src/third_party/crc32c/src
+find . -name "*.h" -o -name "*.cc" |xargs sed -i -e 's,#include "crc32c/,#include "../include/crc32c/,g'
+cmake . || : # This is ok to fail because of gmock/gtest/... deps. We just need it to generate crc32c_config.h first.
 
 %build
 # CMAKE_BUILD_TYPE should always be Release due to some hardcoded checks.
