@@ -1,7 +1,6 @@
 %global commit0 6708e0d31a73e64fe12f54829bf4060c41b2658e
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global date 20211225
-%global _disable_ld_no_undefined %nil
 
 %define major 0
 %define libname %mklibname %{name} %{major}
@@ -22,12 +21,12 @@ License: BSD and ASL 2.0
 Summary: WebRTC library for the Telegram messenger
 URL: https://github.com/desktop-app/%{name}
 Source0: %{url}/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
-Source1: https://github.com/google/crc32c/archive/refs/tags/1.1.2.tar.gz
 
 # Use system libvpx and libopenh264
 Patch0: tg_owt-system-libvpx.patch
 Patch1: tg_owt-clang-buildfix.patch
-Patch2: tg_owt-unresolved-symbols.patch
+Patch2: https://raw.githubusercontent.com/gentoo/gentoo/master/media-libs/tg_owt/files/tg_owt-0_pre20211207-fix-dcsctp-references.patch
+Patch3: tg_owt-20211226-system-absl.patch
 
 BuildRequires: pkgconfig(alsa)
 BuildRequires: pkgconfig(libavcodec)
@@ -43,7 +42,6 @@ BuildRequires: pkgconfig(protobuf)
 BuildRequires: pkgconfig(openh264)
 BuildRequires: pkgconfig(vpx)
 BuildRequires: pkgconfig(libyuv)
-BuildRequires: pkgconfig(rnnoise)
 BuildRequires: pkgconfig(libevent)
 BuildRequires: pkgconfig(x11)
 BuildRequires: pkgconfig(xcomposite)
@@ -102,7 +100,6 @@ Requires: pkgconfig(protobuf)
 Requires: pkgconfig(openh264)
 Requires: pkgconfig(vpx)
 Requires: pkgconfig(libyuv)
-Requires: pkgconfig(rnnoise)
 Requires: pkgconfig(libevent)
 Requires: pkgconfig(x11)
 Requires: pkgconfig(xcomposite)
@@ -119,15 +116,9 @@ Requires: cmake(absl)
 %{summary}.
 
 %prep
-%autosetup -n %{name}-%{commit0} -p1 -a 1
+%autosetup -n %{name}-%{commit0} -p1
 # Make sure nothing pulls in superfluous bundled libraries
-rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/libopenh264.cmake src/third_party/libyuv cmake/libyuv.cmake
-# But add the used but not bundled library
-mkdir -p src/third_party/crc32c
-mv crc32c-1.1.2 src/third_party/crc32c/src
-cd src/third_party/crc32c/src
-find . -name "*.h" -o -name "*.cc" |xargs sed -i -e 's,#include "crc32c/,#include "../include/crc32c/,g'
-cmake . || : # This is ok to fail because of gmock/gtest/... deps. We just need it to generate crc32c_config.h first.
+rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/libopenh264.cmake src/third_party/libyuv cmake/libyuv.cmake src/third_party/abseil-cpp cmake/libabsl.cmake
 
 %build
 # CMAKE_BUILD_TYPE should always be Release due to some hardcoded checks.

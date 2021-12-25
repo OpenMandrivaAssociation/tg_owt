@@ -1,0 +1,26 @@
+diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/cmake/external.cmake.omv~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/cmake/external.cmake
+--- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/cmake/external.cmake.omv~	2021-12-25 23:59:11.500767057 +0100
++++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/cmake/external.cmake	2021-12-26 00:00:38.216070281 +0100
+@@ -100,8 +100,8 @@ endfunction()
+ function(link_libabsl target_name)
+     if (TG_OWT_PACKAGED_BUILD)
+         find_package(absl)
+-        set(absl_FOUND ${absl_FOUND} PARENT_SCOPE)
+-        if (absl_FOUND)
++	set(absl_FOUND TRUE PARENT_SCOPE)
++	if (TRUE)
+             target_link_libraries(${target_name}
+             INTERFACE
+                 absl::algorithm_container
+diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/CMakeLists.txt.omv~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/CMakeLists.txt
+--- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/CMakeLists.txt.omv~	2021-12-26 00:00:55.932131828 +0100
++++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/CMakeLists.txt	2021-12-26 00:01:07.249171078 +0100
+@@ -77,7 +77,7 @@ include(cmake/init_target.cmake)
+ include(cmake/generate_target.cmake)
+ include(cmake/target_yasm_sources.cmake)
+ include(cmake/external.cmake)
+-include(cmake/libabsl.cmake)
++#include(cmake/libabsl.cmake)
+ include(cmake/libpffft.cmake)
+ include(cmake/librnnoise.cmake)
+ include(cmake/libsrtp.cmake)
