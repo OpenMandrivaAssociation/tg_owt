@@ -1,6 +1,6 @@
-%global commit0 d5c3d43b959c7e9e7d8004b9b7fdadd12ce7d589
+%global commit0 6708e0d31a73e64fe12f54829bf4060c41b2658e
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20211212
+%global date 20211225
 %global _disable_ld_no_undefined %nil
 
 %define major 0
@@ -132,10 +132,12 @@ cmake . || : # This is ok to fail because of gmock/gtest/... deps. We just need 
 %build
 # CMAKE_BUILD_TYPE should always be Release due to some hardcoded checks.
 %cmake -G Ninja \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
-    -DTG_OWT_USE_PROTOBUF:BOOL=ON \
-    -DTG_OWT_PACKAGED_BUILD:BOOL=ON
+	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
+	-DTG_OWT_USE_PROTOBUF:BOOL=ON \
+	-DTG_OWT_PACKAGED_BUILD:BOOL=ON \
+	-DTG_OWT_BUILD_AUDIO_BACKENDS:BOOL=ON \
+	-DTG_OWT_USE_PIPEWIRE:BOOL=ON
 
 %ninja_build
 
