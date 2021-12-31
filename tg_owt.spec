@@ -8,7 +8,7 @@
 
 Name: tg_owt
 Version: 0
-Release: 5.%{date}git%{shortcommit0}
+Release: 6.%{date}git%{shortcommit0}
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
@@ -125,6 +125,7 @@ rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/
 %cmake -G Ninja \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
+	-DCMAKE_CXX_STANDARD=17 \
 	-DTG_OWT_USE_PROTOBUF:BOOL=ON \
 	-DTG_OWT_PACKAGED_BUILD:BOOL=ON \
 	-DTG_OWT_BUILD_AUDIO_BACKENDS:BOOL=ON \
