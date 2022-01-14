@@ -122,6 +122,7 @@ rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/
 
 %build
 # CMAKE_BUILD_TYPE should always be Release due to some hardcoded checks.
+LDFLAGS="%{optflags} -std=gnu++17" \
 %cmake -G Ninja \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
