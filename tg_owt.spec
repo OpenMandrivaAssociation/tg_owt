@@ -1,7 +1,6 @@
 %global commit0 6708e0d31a73e64fe12f54829bf4060c41b2658e
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global date 20211225
-%define _disable_lto 1
 
 %define major 0
 %define libname %mklibname %{name} %{major}
