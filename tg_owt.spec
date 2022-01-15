@@ -9,7 +9,7 @@
 
 Name: tg_owt
 Version: 0
-Release: 7.%{date}git%{shortcommit0}
+Release: 8.%{date}git%{shortcommit0}
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
@@ -32,7 +32,6 @@ Patch3: tg_owt-20211226-system-absl.patch
 BuildRequires: pkgconfig(alsa)
 BuildRequires: pkgconfig(libavcodec)
 BuildRequires: pkgconfig(libavformat)
-BuildRequires: pkgconfig(libavresample)
 BuildRequires: pkgconfig(libavutil)
 BuildRequires: pkgconfig(libjpeg)
 BuildRequires: pkgconfig(libpulse)
@@ -90,7 +89,6 @@ Requires: %{libname} = %{EVRD}
 Requires: pkgconfig(alsa)
 Requires: pkgconfig(libavcodec)
 Requires: pkgconfig(libavformat)
-Requires: pkgconfig(libavresample)
 Requires: pkgconfig(libavutil)
 Requires: pkgconfig(libjpeg)
 Requires: pkgconfig(libpulse)
