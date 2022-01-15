@@ -1,7 +1,6 @@
 %global commit0 6708e0d31a73e64fe12f54829bf4060c41b2658e
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
 %global date 20211225
-%define _disable_lto 1
 
 %define major 0
 %define libname %mklibname %{name} %{major}
@@ -121,6 +120,7 @@ rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/
 
 %build
 # CMAKE_BUILD_TYPE should always be Release due to some hardcoded checks.
+LDFLAGS="%{optflags} -std=gnu++17" \
 %cmake -G Ninja \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
