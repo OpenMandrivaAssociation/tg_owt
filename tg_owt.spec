@@ -8,7 +8,7 @@
 
 Name: tg_owt
 Version: 0
-Release: 8.%{date}git%{shortcommit0}
+Release: 9.%{date}git%{shortcommit0}
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
@@ -26,7 +26,6 @@ Source1: https://github.com/google/crc32c/archive/21fc8ef30415a635e7351ffa0e5d53
 # Use system libvpx and libopenh264
 Patch0: tg_owt-system-libvpx.patch
 Patch1: tg_owt-clang-buildfix.patch
-Patch2: https://raw.githubusercontent.com/gentoo/gentoo/master/media-libs/tg_owt/files/tg_owt-0_pre20211207-fix-dcsctp-references.patch
 Patch3: tg_owt-20211226-system-absl.patch
 Patch4: tg_owt-compile.patch
 
