@@ -53,6 +53,7 @@ BuildRequires: pkgconfig(xrender)
 BuildRequires: pkgconfig(xrandr)
 BuildRequires: pkgconfig(xtst)
 BuildRequires: pkgconfig(libpipewire-0.3)
+BuildRequires: pkgconfig(gbm)
 BuildRequires: cmake(absl)
 
 BuildRequires: cmake
