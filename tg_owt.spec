@@ -1,6 +1,6 @@
-%global commit0 6708e0d31a73e64fe12f54829bf4060c41b2658e
+%global commit0 10d5f4bf77333ef6b43516f90d2ce13273255f41
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20211225
+%global date 20220508
 
 %define major 0
 %define libname %mklibname %{name} %{major}
@@ -21,12 +21,14 @@ License: BSD and ASL 2.0
 Summary: WebRTC library for the Telegram messenger
 URL: https://github.com/desktop-app/%{name}
 Source0: %{url}/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
+Source1: https://github.com/google/crc32c/archive/21fc8ef30415a635e7351ffa0e5d5367943d4a94.tar.gz
 
 # Use system libvpx and libopenh264
 Patch0: tg_owt-system-libvpx.patch
 Patch1: tg_owt-clang-buildfix.patch
 Patch2: https://raw.githubusercontent.com/gentoo/gentoo/master/media-libs/tg_owt/files/tg_owt-0_pre20211207-fix-dcsctp-references.patch
 Patch3: tg_owt-20211226-system-absl.patch
+Patch4: tg_owt-compile.patch
 
 BuildRequires: pkgconfig(alsa)
 BuildRequires: pkgconfig(libavcodec)
@@ -114,9 +116,11 @@ Requires: cmake(absl)
 %{summary}.
 
 %prep
-%autosetup -n %{name}-%{commit0} -p1
+%autosetup -n %{name}-%{commit0} -p1 -a 1
 # Make sure nothing pulls in superfluous bundled libraries
 rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/libopenh264.cmake src/third_party/libyuv cmake/libyuv.cmake src/third_party/abseil-cpp cmake/libabsl.cmake
+mv crc32c-*/* src/third_party/crc32c/src
+rm -rf crc32c-*
 
 %build
 # CMAKE_BUILD_TYPE should always be Release due to some hardcoded checks.

@@ -1,6 +1,6 @@
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/cmake/libwebrtcbuild.cmake.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/cmake/libwebrtcbuild.cmake
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/cmake/libwebrtcbuild.cmake.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/cmake/libwebrtcbuild.cmake	2021-12-25 23:47:46.500167932 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/cmake/libwebrtcbuild.cmake.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/cmake/libwebrtcbuild.cmake
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/cmake/libwebrtcbuild.cmake.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/cmake/libwebrtcbuild.cmake	2022-07-12 02:55:19.486311386 +0200
 @@ -3,7 +3,7 @@ add_library(tg_owt::libwebrtcbuild ALIAS
  
  target_link_libraries(libwebrtcbuild
@@ -10,24 +10,22 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/cmake/libwebrtcbuild.cm
  )
  if (NOT absl_FOUND)
      target_link_libraries(libwebrtcbuild INTERFACE tg_owt::libabsl)
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/CMakeLists.txt.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/CMakeLists.txt
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/CMakeLists.txt.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/CMakeLists.txt	2021-12-25 23:48:24.904328852 +0100
-@@ -78,13 +78,10 @@ include(cmake/generate_target.cmake)
- include(cmake/target_yasm_sources.cmake)
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/CMakeLists.txt.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/CMakeLists.txt
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/CMakeLists.txt.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/CMakeLists.txt	2022-07-12 03:04:05.537228887 +0200
+@@ -79,11 +79,9 @@ include(cmake/target_yasm_sources.cmake)
  include(cmake/external.cmake)
  include(cmake/libabsl.cmake)
+ include(cmake/libcrc32c.cmake)
 -include(cmake/libopenh264.cmake)
  include(cmake/libpffft.cmake)
  include(cmake/librnnoise.cmake)
  include(cmake/libsrtp.cmake)
- include(cmake/libusrsctp.cmake)
--include(cmake/libvpx.cmake)
 -include(cmake/libyuv.cmake)
  if (APPLE)
      include(cmake/libsdkmacos.cmake)
  endif()
-@@ -129,7 +126,7 @@ PRIVATE
+@@ -145,7 +143,7 @@ PRIVATE
      tg_owt::libpffft
      tg_owt::librnnoise
      tg_owt::libsrtp
@@ -36,7 +34,7 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/CMakeLists.txt.1~ tg_ow
  )
  
  if (is_x86 OR is_x64)
-@@ -2411,7 +2408,6 @@ set(export_targets
+@@ -2569,7 +2567,6 @@ set(export_targets
      librnnoise
      libsrtp
      libwebrtcbuild
@@ -44,9 +42,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/CMakeLists.txt.1~ tg_ow
      ${platform_export}
  )
  if (TG_OWT_USE_PROTOBUF)
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/i010_buffer.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/i010_buffer.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/i010_buffer.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/i010_buffer.cc	2021-12-25 23:47:46.500167932 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/api/video/i010_buffer.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/api/video/i010_buffer.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/api/video/i010_buffer.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/api/video/i010_buffer.cc	2022-07-12 02:55:19.487311361 +0200
 @@ -14,8 +14,8 @@
  #include "api/video/i420_buffer.h"
  #include "rtc_base/checks.h"
@@ -58,9 +56,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/i010_buff
  
  // Aligning pointer to 64 bytes for improved performance, e.g. use SIMD.
  static const int kBufferAlignment = 64;
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/i420_buffer.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/i420_buffer.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/i420_buffer.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/i420_buffer.cc	2021-12-25 23:47:46.500167932 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/api/video/i420_buffer.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/api/video/i420_buffer.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/api/video/i420_buffer.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/api/video/i420_buffer.cc	2022-07-12 02:55:19.487311361 +0200
 @@ -16,9 +16,9 @@
  
  #include "rtc_base/checks.h"
@@ -74,9 +72,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/i420_buff
  
  // Aligning pointer to 64 bytes for improved performance, e.g. use SIMD.
  static const int kBufferAlignment = 64;
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/nv12_buffer.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/nv12_buffer.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/nv12_buffer.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/nv12_buffer.cc	2021-12-25 23:47:46.500167932 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/api/video/nv12_buffer.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/api/video/nv12_buffer.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/api/video/nv12_buffer.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/api/video/nv12_buffer.cc	2022-07-12 02:55:19.487311361 +0200
 @@ -13,8 +13,8 @@
  #include "api/video/i420_buffer.h"
  #include "rtc_base/checks.h"
@@ -88,9 +86,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/api/video/nv12_buff
  
  namespace webrtc {
  
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/libyuv/libyuv_unittest.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/libyuv/libyuv_unittest.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/libyuv/libyuv_unittest.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/libyuv/libyuv_unittest.cc	2021-12-25 23:47:46.500167932 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/common_video/libyuv/libyuv_unittest.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/common_video/libyuv/libyuv_unittest.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/common_video/libyuv/libyuv_unittest.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/common_video/libyuv/libyuv_unittest.cc	2022-07-12 02:55:19.487311361 +0200
 @@ -8,7 +8,7 @@
   *  be found in the AUTHORS file in the root of the source tree.
   */
@@ -100,9 +98,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/libyuv
  
  #include <math.h>
  #include <string.h>
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/libyuv/webrtc_libyuv.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/libyuv/webrtc_libyuv.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/libyuv/webrtc_libyuv.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/libyuv/webrtc_libyuv.cc	2021-12-25 23:47:46.500167932 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/common_video/libyuv/webrtc_libyuv.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/common_video/libyuv/webrtc_libyuv.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/common_video/libyuv/webrtc_libyuv.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/common_video/libyuv/webrtc_libyuv.cc	2022-07-12 02:55:19.488311336 +0200
 @@ -15,7 +15,7 @@
  #include "api/video/i420_buffer.h"
  #include "common_video/include/video_frame_buffer.h"
@@ -112,9 +110,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/libyuv
  
  namespace webrtc {
  
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/video_frame_buffer.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/video_frame_buffer.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/video_frame_buffer.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/video_frame_buffer.cc	2021-12-25 23:47:46.500167932 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/common_video/video_frame_buffer.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/common_video/video_frame_buffer.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/common_video/video_frame_buffer.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/common_video/video_frame_buffer.cc	2022-07-12 02:55:19.488311336 +0200
 @@ -12,7 +12,7 @@
  #include "api/video/i420_buffer.h"
  #include "rtc_base/checks.h"
@@ -124,9 +122,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/common_video/video_
  
  namespace webrtc {
  
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/logging/rtc_event_log/encoder/rtc_event_log_encoder_new_format.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/logging/rtc_event_log/encoder/rtc_event_log_encoder_new_format.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/logging/rtc_event_log/encoder/rtc_event_log_encoder_new_format.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/logging/rtc_event_log/encoder/rtc_event_log_encoder_new_format.cc	2021-12-25 23:47:46.501167937 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/logging/rtc_event_log/encoder/rtc_event_log_encoder_new_format.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/logging/rtc_event_log/encoder/rtc_event_log_encoder_new_format.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/logging/rtc_event_log/encoder/rtc_event_log_encoder_new_format.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/logging/rtc_event_log/encoder/rtc_event_log_encoder_new_format.cc	2022-07-12 02:55:19.488311336 +0200
 @@ -103,6 +103,7 @@ rtclog2::FrameDecodedEvents::Codec Conve
      case VideoCodecType::kVideoCodecAV1:
        return rtclog2::FrameDecodedEvents::CODEC_AV1;
@@ -135,9 +133,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/logging/rtc_event_l
        return rtclog2::FrameDecodedEvents::CODEC_H264;
      case VideoCodecType::kVideoCodecMultiplex:
        // This codec type is afaik not used.
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/desktop_capture/desktop_frame.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/desktop_capture/desktop_frame.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/desktop_capture/desktop_frame.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/desktop_capture/desktop_frame.cc	2021-12-25 23:47:46.501167937 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/desktop_capture/desktop_frame.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/desktop_capture/desktop_frame.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/desktop_capture/desktop_frame.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/desktop_capture/desktop_frame.cc	2022-07-12 02:55:19.488311336 +0200
 @@ -19,7 +19,7 @@
  #include "modules/desktop_capture/desktop_capture_types.h"
  #include "modules/desktop_capture/desktop_geometry.h"
@@ -147,9 +145,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/desktop_cap
  
  namespace webrtc {
  
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/desktop_capture/desktop_frame_rotation.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/desktop_capture/desktop_frame_rotation.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/desktop_capture/desktop_frame_rotation.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/desktop_capture/desktop_frame_rotation.cc	2021-12-25 23:47:46.501167937 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/desktop_capture/desktop_frame_rotation.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/desktop_capture/desktop_frame_rotation.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/desktop_capture/desktop_frame_rotation.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/desktop_capture/desktop_frame_rotation.cc	2022-07-12 02:55:19.488311336 +0200
 @@ -11,7 +11,7 @@
  #include "modules/desktop_capture/desktop_frame_rotation.h"
  
@@ -159,9 +157,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/desktop_cap
  
  namespace webrtc {
  
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_capture/video_capture_impl.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_capture/video_capture_impl.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_capture/video_capture_impl.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_capture/video_capture_impl.cc	2021-12-25 23:47:46.501167937 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_capture/video_capture_impl.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_capture/video_capture_impl.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_capture/video_capture_impl.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_capture/video_capture_impl.cc	2022-07-12 02:55:19.488311336 +0200
 @@ -21,7 +21,7 @@
  #include "rtc_base/ref_counted_object.h"
  #include "rtc_base/time_utils.h"
@@ -171,9 +169,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_captu
  
  namespace webrtc {
  namespace videocapturemodule {
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/av1/libaom_av1_decoder.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/av1/libaom_av1_decoder.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/av1/libaom_av1_decoder.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/av1/libaom_av1_decoder.cc	2021-12-25 23:47:46.501167937 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/av1/libaom_av1_decoder.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/av1/libaom_av1_decoder.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/av1/libaom_av1_decoder.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/av1/libaom_av1_decoder.cc	2022-07-12 02:55:19.489311311 +0200
 @@ -23,7 +23,7 @@
  #include "rtc_base/logging.h"
  #include "third_party/libaom/source/libaom/aom/aom_decoder.h"
@@ -183,9 +181,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_codin
  
  namespace webrtc {
  namespace {
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc	2021-12-25 23:47:46.501167937 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/h264/h264_decoder_impl.cc	2022-07-12 02:55:19.489311311 +0200
 @@ -35,7 +35,7 @@ extern "C" {
  #include "rtc_base/logging.h"
  #include "system_wrappers/include/field_trial.h"
@@ -195,9 +193,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_codin
  
  namespace webrtc {
  
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/h264/h264_encoder_impl.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/h264/h264_encoder_impl.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/h264/h264_encoder_impl.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/h264/h264_encoder_impl.cc	2021-12-25 23:47:46.501167937 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/h264/h264_encoder_impl.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/h264/h264_encoder_impl.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/h264/h264_encoder_impl.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/h264/h264_encoder_impl.cc	2022-07-12 02:55:19.489311311 +0200
 @@ -28,8 +28,8 @@
  #include "rtc_base/logging.h"
  #include "rtc_base/time_utils.h"
@@ -209,9 +207,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_codin
  #include <wels/codec_api.h>
  #include <wels/codec_app_def.h>
  #include <wels/codec_def.h>
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/test/videoprocessor.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/test/videoprocessor.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/test/videoprocessor.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/test/videoprocessor.cc	2021-12-25 23:47:46.501167937 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/test/videoprocessor.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/test/videoprocessor.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/test/videoprocessor.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/test/videoprocessor.cc	2022-07-12 02:55:19.489311311 +0200
 @@ -35,8 +35,8 @@
  #include "rtc_base/task_utils/to_queued_task.h"
  #include "rtc_base/time_utils.h"
@@ -223,9 +221,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_codin
  
  namespace webrtc {
  namespace test {
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp8/libvpx_vp8_decoder.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp8/libvpx_vp8_decoder.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp8/libvpx_vp8_decoder.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp8/libvpx_vp8_decoder.cc	2021-12-25 23:47:46.501167937 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp8/libvpx_vp8_decoder.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp8/libvpx_vp8_decoder.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp8/libvpx_vp8_decoder.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp8/libvpx_vp8_decoder.cc	2022-07-12 02:55:19.489311311 +0200
 @@ -30,7 +30,7 @@
  #include "rtc_base/time_utils.h"
  #include "system_wrappers/include/field_trial.h"
@@ -235,9 +233,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_codin
  #include "vpx/vp8.h"
  #include "vpx/vp8dx.h"
  #include "vpx/vpx_decoder.h"
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp8/libvpx_vp8_encoder.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp8/libvpx_vp8_encoder.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp8/libvpx_vp8_encoder.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp8/libvpx_vp8_encoder.cc	2021-12-25 23:47:46.501167937 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp8/libvpx_vp8_encoder.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp8/libvpx_vp8_encoder.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp8/libvpx_vp8_encoder.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp8/libvpx_vp8_encoder.cc	2022-07-12 02:55:19.490311286 +0200
 @@ -38,7 +38,7 @@
  #include "rtc_base/logging.h"
  #include "rtc_base/trace_event.h"
@@ -247,9 +245,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_codin
  #include "vpx/vp8cx.h"
  
  namespace webrtc {
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc	2021-12-25 23:47:46.501167937 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp9/libvpx_vp9_decoder.cc	2022-07-12 02:55:19.490311286 +0200
 @@ -23,7 +23,7 @@
  #include "modules/video_coding/utility/vp9_uncompressed_header_parser.h"
  #include "rtc_base/checks.h"
@@ -259,9 +257,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_codin
  #include "vpx/vp8dx.h"
  #include "vpx/vpx_decoder.h"
  
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc	2021-12-25 23:47:46.501167937 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_coding/codecs/vp9/libvpx_vp9_encoder.cc	2022-07-12 02:55:19.490311286 +0200
 @@ -39,7 +39,7 @@
  #include "rtc_base/strings/string_builder.h"
  #include "rtc_base/time_utils.h"
@@ -271,9 +269,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_codin
  #include "vpx/vp8cx.h"
  #include "vpx/vpx_encoder.h"
  
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_processing/video_denoiser.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_processing/video_denoiser.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_processing/video_denoiser.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_processing/video_denoiser.cc	2021-12-25 23:47:46.502167941 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_processing/video_denoiser.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_processing/video_denoiser.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_processing/video_denoiser.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/modules/video_processing/video_denoiser.cc	2022-07-12 02:55:19.490311286 +0200
 @@ -14,7 +14,7 @@
  #include <string.h>
  
@@ -283,9 +281,9 @@ diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/modules/video_proce
  
  namespace webrtc {
  
-diff -up tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/sdk/android/src/jni/yuv_helper.cc.1~ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/sdk/android/src/jni/yuv_helper.cc
---- tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/sdk/android/src/jni/yuv_helper.cc.1~	2021-12-22 10:50:18.000000000 +0100
-+++ tg_owt-6708e0d31a73e64fe12f54829bf4060c41b2658e/src/sdk/android/src/jni/yuv_helper.cc	2021-12-25 23:47:46.502167941 +0100
+diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/sdk/android/src/jni/yuv_helper.cc.1~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/sdk/android/src/jni/yuv_helper.cc
+--- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/sdk/android/src/jni/yuv_helper.cc.1~	2022-05-08 06:44:06.000000000 +0200
++++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/src/sdk/android/src/jni/yuv_helper.cc	2022-07-12 02:55:19.490311286 +0200
 @@ -12,8 +12,8 @@
  
  #include "sdk/android/generated_video_jni/YuvHelper_jni.h"
