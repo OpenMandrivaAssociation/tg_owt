@@ -1,0 +1,12 @@
+diff -up tg_owt-1eab2d736a2fecce01686689b72e39ad8c314ebb/CMakeLists.txt.omv~ tg_owt-1eab2d736a2fecce01686689b72e39ad8c314ebb/CMakeLists.txt
+--- tg_owt-1eab2d736a2fecce01686689b72e39ad8c314ebb/CMakeLists.txt.omv~	2023-01-04 16:23:56.110371417 +0100
++++ tg_owt-1eab2d736a2fecce01686689b72e39ad8c314ebb/CMakeLists.txt	2023-01-04 16:24:02.079391071 +0100
+@@ -76,7 +76,7 @@ include(cmake/generate_target.cmake)
+ include(cmake/target_yasm_sources.cmake)
+ include(cmake/external.cmake)
+ #include(cmake/libabsl.cmake)
+-include(cmake/libcrc32c.cmake)
++#include(cmake/libcrc32c.cmake)
+ include(cmake/libpffft.cmake)
+ include(cmake/librnnoise.cmake)
+ include(cmake/libsrtp.cmake)

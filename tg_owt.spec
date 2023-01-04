@@ -8,7 +8,7 @@
 
 Name: tg_owt
 Version: 0
-Release: 9.%{date}git%{shortcommit0}
+Release: 10.%{date}git%{shortcommit0}
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
@@ -19,15 +19,14 @@ Release: 9.%{date}git%{shortcommit0}
 # usrsctp - BSD
 License: BSD and ASL 2.0
 Summary: WebRTC library for the Telegram messenger
-URL: https://github.com/desktop-app/%{name}
-Source0: %{url}/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
-Source1: https://github.com/google/crc32c/archive/21fc8ef30415a635e7351ffa0e5d5367943d4a94.tar.gz
+URL: https://github.com/desktop-app/tg_owt
+Source0: https://github.com/desktop-app/tg_owt/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
 
 # Use system libvpx and libopenh264
 Patch0: tg_owt-system-libvpx.patch
 Patch1: tg_owt-clang-buildfix.patch
 Patch3: tg_owt-20211226-system-absl.patch
-#Patch4: tg_owt-compile.patch
+Patch4: tg_owt-system-crc32c.patch
 
 BuildRequires: pkgconfig(alsa)
 BuildRequires: pkgconfig(libavcodec)
@@ -57,6 +56,7 @@ BuildRequires: pkgconfig(libdrm)
 BuildRequires: pkgconfig(gl)
 BuildRequires: pkgconfig(egl)
 BuildRequires: cmake(absl)
+BuildRequires: cmake(Crc32c)
 
 BuildRequires: cmake
 BuildRequires: ninja
@@ -119,19 +119,20 @@ Requires: cmake(absl)
 %{summary}.
 
 %prep
-%autosetup -n %{name}-%{commit0} -p1 -a 1
+%autosetup -n %{name}-%{commit0} -p1
+# -a 1
 # Make sure nothing pulls in superfluous bundled libraries
 rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/libopenh264.cmake src/third_party/libyuv cmake/libyuv.cmake src/third_party/abseil-cpp cmake/libabsl.cmake
-mv crc32c-*/* src/third_party/crc32c/src
-rm -rf crc32c-*
+#mv crc32c-*/* src/third_party/crc32c/src
+#rm -rf crc32c-*
 
 %build
 # CMAKE_BUILD_TYPE should always be Release due to some hardcoded checks.
-LDFLAGS="%{optflags} -std=gnu++17" \
+LDFLAGS="%{optflags} -std=gnu++20" \
 %cmake -G Ninja \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
-	-DCMAKE_CXX_STANDARD=17 \
+	-DCMAKE_CXX_STANDARD=20 \
 	-DTG_OWT_USE_PROTOBUF:BOOL=ON \
 	-DTG_OWT_PACKAGED_BUILD:BOOL=ON \
 	-DTG_OWT_BUILD_AUDIO_BACKENDS:BOOL=ON \
