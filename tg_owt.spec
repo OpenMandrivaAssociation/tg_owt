@@ -1,6 +1,6 @@
-%global commit0 621f3da55331733bf0d1b223786b96b68c03dca1
+%global commit0 1eab2d736a2fecce01686689b72e39ad8c314ebb
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20220914
+%global date 20230103
 
 %define major 0
 %define libname %mklibname %{name} %{major}
@@ -27,7 +27,7 @@ Source1: https://github.com/google/crc32c/archive/21fc8ef30415a635e7351ffa0e5d53
 Patch0: tg_owt-system-libvpx.patch
 Patch1: tg_owt-clang-buildfix.patch
 Patch3: tg_owt-20211226-system-absl.patch
-Patch4: tg_owt-compile.patch
+#Patch4: tg_owt-compile.patch
 
 BuildRequires: pkgconfig(alsa)
 BuildRequires: pkgconfig(libavcodec)
