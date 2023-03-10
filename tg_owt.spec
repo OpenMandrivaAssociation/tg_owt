@@ -8,7 +8,7 @@
 
 Name: tg_owt
 Version: 0
-Release: 13.%{date}git%{shortcommit0}
+Release: 14.%{date}git%{shortcommit0}
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
@@ -128,7 +128,7 @@ rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/
 
 %build
 # CMAKE_BUILD_TYPE should always be Release due to some hardcoded checks.
-LDFLAGS="%{optflags} -std=gnu++20" \
+LDFLAGS="%{optflags} -std=gnu++20 -DPROTOBUF_USE_DLLS" \
 %cmake -G Ninja \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON \
