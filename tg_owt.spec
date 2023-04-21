@@ -1,6 +1,6 @@
-%global commit0 5098730b9eb6173f0b52068fe2555b7c1015123a
+%global commit0 fe316b0c5a155cceb2ddecee70d7b582cadfa225
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20230207
+%global date 20230421
 
 %define major 0
 %define libname %mklibname %{name} %{major}
@@ -25,6 +25,7 @@ Source0: https://github.com/desktop-app/tg_owt/archive/%{commit0}/%{name}-%{shor
 # Use system libvpx and libopenh264
 Patch0: tg_owt-system-libvpx.patch
 Patch1: tg_owt-clang-buildfix.patch
+Patch2: tg_owt-clang16.patch
 Patch3: tg_owt-20211226-system-absl.patch
 Patch4: tg_owt-system-crc32c.patch
 

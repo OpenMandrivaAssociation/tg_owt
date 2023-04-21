@@ -1,7 +1,7 @@
-diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/cmake/external.cmake.4~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/cmake/external.cmake
---- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/cmake/external.cmake.4~	2022-05-08 06:44:06.000000000 +0200
-+++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/cmake/external.cmake	2022-07-12 03:05:52.380575572 +0200
-@@ -102,8 +102,8 @@ endfunction()
+diff -up tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/cmake/external.cmake.4~ tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/cmake/external.cmake
+--- tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/cmake/external.cmake.4~	2023-04-21 13:40:06.228393214 +0200
++++ tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/cmake/external.cmake	2023-04-21 13:40:58.118758653 +0200
+@@ -100,8 +100,8 @@ endfunction()
  function(link_libabsl target_name)
      if (TG_OWT_PACKAGED_BUILD)
          find_package(absl)
@@ -10,12 +10,12 @@ diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/cmake/external.cmake.4~
 +	set(absl_FOUND TRUE PARENT_SCOPE)
 +	if (TRUE)
              target_link_libraries(${target_name}
-             INTERFACE
+             PUBLIC
                  absl::algorithm_container
-diff -up tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/CMakeLists.txt.4~ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/CMakeLists.txt
---- tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/CMakeLists.txt.4~	2022-07-12 03:05:52.381575548 +0200
-+++ tg_owt-10d5f4bf77333ef6b43516f90d2ce13273255f41/CMakeLists.txt	2022-07-12 03:06:09.499150530 +0200
-@@ -77,7 +77,7 @@ include(cmake/init_target.cmake)
+diff -up tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/CMakeLists.txt.4~ tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/CMakeLists.txt
+--- tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/CMakeLists.txt.4~	2023-04-21 13:40:06.210393087 +0200
++++ tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/CMakeLists.txt	2023-04-21 13:40:06.228393214 +0200
+@@ -74,7 +74,7 @@ include(cmake/init_target.cmake)
  include(cmake/generate_target.cmake)
  include(cmake/target_yasm_sources.cmake)
  include(cmake/external.cmake)
