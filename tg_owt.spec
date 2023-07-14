@@ -1,6 +1,6 @@
-%global commit0 fe316b0c5a155cceb2ddecee70d7b582cadfa225
+%global commit0 a45d8b8f0a99bd0e5118dda1dc4a8b7b3ad5dcfd
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20230421
+%global date 20230615
 
 %define major 0
 %define libname %mklibname %{name} %{major}
@@ -21,13 +21,15 @@ License: BSD and ASL 2.0
 Summary: WebRTC library for the Telegram messenger
 URL: https://github.com/desktop-app/tg_owt
 Source0: https://github.com/desktop-app/tg_owt/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
+Source1: https://github.com/cisco/libsrtp/archive/refs/tags/v2.5.0.tar.gz
 
 # Use system libvpx and libopenh264
 Patch0: tg_owt-system-libvpx.patch
 Patch1: tg_owt-clang-buildfix.patch
-Patch2: tg_owt-clang16.patch
 Patch3: tg_owt-20211226-system-absl.patch
 Patch4: tg_owt-system-crc32c.patch
+# NOT YET -- tg_owt uses private headers
+#Patch5: tg_owt-system-srtp.patch
 
 BuildRequires: pkgconfig(alsa)
 BuildRequires: pkgconfig(libavcodec)
@@ -56,6 +58,7 @@ BuildRequires: pkgconfig(gbm)
 BuildRequires: pkgconfig(libdrm)
 BuildRequires: pkgconfig(gl)
 BuildRequires: pkgconfig(egl)
+BuildRequires: pkgconfig(libsrtp2)
 BuildRequires: cmake(absl)
 BuildRequires: cmake(Crc32c)
 
@@ -120,12 +123,13 @@ Requires: cmake(absl)
 %{summary}.
 
 %prep
-%autosetup -n %{name}-%{commit0} -p1
-# -a 1
+%autosetup -n %{name}-%{commit0} -p1 -a 1
 # Make sure nothing pulls in superfluous bundled libraries
 rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/libopenh264.cmake src/third_party/libyuv cmake/libyuv.cmake src/third_party/abseil-cpp cmake/libabsl.cmake
 #mv crc32c-*/* src/third_party/crc32c/src
 #rm -rf crc32c-*
+rmdir src/third_party/libsrtp
+mv libsrtp-* src/third_party/libsrtp
 
 %build
 # CMAKE_BUILD_TYPE should always be Release due to some hardcoded checks.
