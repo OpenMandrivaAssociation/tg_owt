@@ -1,6 +1,6 @@
-%global commit0 0532942ac6176a66ef184fb728a4cbb02958fc0b
+%global commit0 71cce98c5fb1d9328892d55f70db711afd5b1aef
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20230823
+%global date 20231102
 
 %define major 0
 %define libname %mklibname %{name} %{major}
