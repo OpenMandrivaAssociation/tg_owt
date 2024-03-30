@@ -1,6 +1,6 @@
-%global commit0 71cce98c5fb1d9328892d55f70db711afd5b1aef
+%global commit0 afd9d5d31798d3eacf9ed6c30601e91d0f1e4d60
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20231102
+%global date 20240331
 
 %define major 0
 %define libname %mklibname %{name} %{major}
@@ -21,7 +21,7 @@ License: BSD and ASL 2.0
 Summary: WebRTC library for the Telegram messenger
 URL: https://github.com/desktop-app/tg_owt
 Source0: https://github.com/desktop-app/tg_owt/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
-Source1: https://github.com/cisco/libsrtp/archive/refs/tags/v2.5.0.tar.gz
+Source1: https://github.com/cisco/libsrtp/archive/refs/tags/v2.6.0.tar.gz
 
 # Use system libvpx and libopenh264
 Patch0: tg_owt-system-libvpx.patch
