@@ -8,7 +8,7 @@
 
 Name: tg_owt
 Version: 0
-Release: 19.%{date}git%{shortcommit0}4
+Release: 20.%{date}git%{shortcommit0}
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
@@ -28,6 +28,7 @@ Patch0: tg_owt-system-libvpx.patch
 Patch1: tg_owt-clang-buildfix.patch
 Patch3: tg_owt-20211226-system-absl.patch
 Patch4: tg_owt-system-crc32c.patch
+Patch5: tg_owt-ffmpeg-7.0.patch
 # NOT YET -- tg_owt uses private headers
 #Patch5: tg_owt-system-srtp.patch
 
