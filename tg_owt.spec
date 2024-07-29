@@ -1,6 +1,6 @@
-%global commit0 afd9d5d31798d3eacf9ed6c30601e91d0f1e4d60
+%global commit0 48c9c31d591509799a8385542ff3fb04f4d58327
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20240331
+%global date 20240729
 
 %define major 0
 %define libname %mklibname %{name} %{major}
@@ -23,9 +23,8 @@ URL: https://github.com/desktop-app/tg_owt
 Source0: https://github.com/desktop-app/tg_owt/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
 Source1: https://github.com/cisco/libsrtp/archive/refs/tags/v2.6.0.tar.gz
 
-# Use system libvpx and libopenh264
-Patch0: tg_owt-system-libvpx.patch
-Patch1: tg_owt-clang-buildfix.patch
+#Patch1: tg_owt-clang-buildfix.patch
+Patch2: tg_owt-system-yuv.patch
 Patch3: tg_owt-20211226-system-absl.patch
 Patch4: tg_owt-system-crc32c.patch
 Patch5: tg_owt-ffmpeg-7.0.patch
@@ -146,6 +145,10 @@ LDFLAGS="%{optflags} -std=gnu++20 -DPROTOBUF_USE_DLLS" \
 	-DTG_OWT_PACKAGED_BUILD:BOOL=ON \
 	-DTG_OWT_BUILD_AUDIO_BACKENDS:BOOL=ON \
 	-DTG_OWT_USE_PIPEWIRE:BOOL=ON
+
+# Protobuf headers are generated correctly, but looked for in the wrong place
+mkdir -p logging/rtc_event_log
+ln -s ../../cmake/protobuf/rtc_event_log2.pb.h logging/rtc_event_log/
 
 %ninja_build
 

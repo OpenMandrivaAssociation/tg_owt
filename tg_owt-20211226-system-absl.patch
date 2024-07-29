@@ -1,6 +1,18 @@
-diff -up tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/cmake/external.cmake.4~ tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/cmake/external.cmake
---- tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/cmake/external.cmake.4~	2023-04-21 13:40:06.228393214 +0200
-+++ tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/cmake/external.cmake	2023-04-21 13:40:58.118758653 +0200
+diff -up tg_owt-48c9c31d591509799a8385542ff3fb04f4d58327/CMakeLists.txt.1~ tg_owt-48c9c31d591509799a8385542ff3fb04f4d58327/CMakeLists.txt
+--- tg_owt-48c9c31d591509799a8385542ff3fb04f4d58327/CMakeLists.txt.1~	2024-07-29 20:39:28.445800438 +0200
++++ tg_owt-48c9c31d591509799a8385542ff3fb04f4d58327/CMakeLists.txt	2024-07-29 20:39:43.190033150 +0200
+@@ -74,7 +74,7 @@ include(cmake/init_target.cmake)
+ include(cmake/generate_target.cmake)
+ include(cmake/generate_field_trials.cmake)
+ include(cmake/external.cmake)
+-include(cmake/libabsl.cmake)
++#include(cmake/libabsl.cmake)
+ include(cmake/libcrc32c.cmake)
+ include(cmake/libpffft.cmake)
+ include(cmake/librnnoise.cmake)
+diff -up tg_owt-48c9c31d591509799a8385542ff3fb04f4d58327/cmake/external.cmake.1~ tg_owt-48c9c31d591509799a8385542ff3fb04f4d58327/cmake/external.cmake
+--- tg_owt-48c9c31d591509799a8385542ff3fb04f4d58327/cmake/external.cmake.1~	2024-07-29 15:28:29.000000000 +0200
++++ tg_owt-48c9c31d591509799a8385542ff3fb04f4d58327/cmake/external.cmake	2024-07-29 20:39:28.445800438 +0200
 @@ -100,8 +100,8 @@ endfunction()
  function(link_libabsl target_name)
      if (TG_OWT_PACKAGED_BUILD)
@@ -12,15 +24,3 @@ diff -up tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/cmake/external.cmake.4~
              target_link_libraries(${target_name}
              PUBLIC
                  absl::algorithm_container
-diff -up tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/CMakeLists.txt.4~ tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/CMakeLists.txt
---- tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/CMakeLists.txt.4~	2023-04-21 13:40:06.210393087 +0200
-+++ tg_owt-fe316b0c5a155cceb2ddecee70d7b582cadfa225/CMakeLists.txt	2023-04-21 13:40:06.228393214 +0200
-@@ -74,7 +74,7 @@ include(cmake/init_target.cmake)
- include(cmake/generate_target.cmake)
- include(cmake/target_yasm_sources.cmake)
- include(cmake/external.cmake)
--include(cmake/libabsl.cmake)
-+#include(cmake/libabsl.cmake)
- include(cmake/libcrc32c.cmake)
- include(cmake/libpffft.cmake)
- include(cmake/librnnoise.cmake)
