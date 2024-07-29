@@ -8,7 +8,7 @@
 
 Name: tg_owt
 Version: 0
-Release: 20.%{date}git%{shortcommit0}1
+Release: 21.%{date}git%{shortcommit0}.1
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
