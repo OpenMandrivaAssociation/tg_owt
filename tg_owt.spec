@@ -1,6 +1,6 @@
-%global commit0 48c9c31d591509799a8385542ff3fb04f4d58327
+%global commit0 dc17143230b5519f3c1a8da0079e00566bd4c5a8
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20240729
+%global date 20240804
 
 %define major 0
 %define libname %mklibname %{name} %{major}
@@ -8,7 +8,7 @@
 
 Name: tg_owt
 Version: 0
-Release: 
+Release: 0.%{date}.1
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
@@ -26,7 +26,6 @@ Source1: https://github.com/cisco/libsrtp/archive/refs/tags/v2.6.0.tar.gz
 #Patch1: tg_owt-clang-buildfix.patch
 Patch2: tg_owt-system-yuv.patch
 Patch3: tg_owt-20211226-system-absl.patch
-Patch4: tg_owt-system-crc32c.patch
 Patch5: tg_owt-ffmpeg-7.0.patch
 # NOT YET -- tg_owt uses private headers
 #Patch5: tg_owt-system-srtp.patch
