@@ -8,7 +8,7 @@
 
 Name: tg_owt
 Version: 0
-Release: 
+Release: 1
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
