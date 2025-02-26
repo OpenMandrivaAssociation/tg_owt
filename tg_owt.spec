@@ -1,9 +1,10 @@
-%global commit0 dc17143230b5519f3c1a8da0079e00566bd4c5a8
+%global commit0 be39b8c8d0db1f377118f813f0c4bd331d341d5e
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20240804
+%global date 20241203
 
 %define major 0
-%define libname %mklibname %{name} %{major}
+%define libname %mklibname %{name}
+%define oldlibname %mklibname %{name} 0
 %define devname %mklibname -d %{name}
 
 Name: tg_owt
@@ -21,12 +22,11 @@ License: BSD and ASL 2.0
 Summary: WebRTC library for the Telegram messenger
 URL: https://github.com/desktop-app/tg_owt
 Source0: https://github.com/desktop-app/tg_owt/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
-Source1: https://github.com/cisco/libsrtp/archive/refs/tags/v2.6.0.tar.gz
+#Source1: https://github.com/cisco/libsrtp/archive/refs/tags/v2.6.0.tar.gz
 
-#Patch1: tg_owt-clang-buildfix.patch
+Patch1: tg_owt-pipewire-compile.patch
 Patch2: tg_owt-system-yuv.patch
 Patch3: tg_owt-20211226-system-absl.patch
-Patch5: tg_owt-ffmpeg-7.0.patch
 # NOT YET -- tg_owt uses private headers
 #Patch5: tg_owt-system-srtp.patch
 
@@ -76,7 +76,6 @@ Provides: bundled(fft) = 0~git
 Provides: bundled(fft4g) = 0~git
 Provides: bundled(g711) = 0~git
 Provides: bundled(g722) = 0~git
-Provides: bundled(libsrtp) = 2.2.0~git94ac00d
 Provides: bundled(pffft) = 0~git483453d
 Provides: bundled(portaudio) = 0~git
 Provides: bundled(sigslot) = 0~git
@@ -84,6 +83,8 @@ Provides: bundled(spl_sqrt_floor) = 0~git
 Provides: bundled(usrsctp) = 1.0.0~gitbee946a
 Summary:	OpenWebRTC library for the Telegram messenger
 Group:		System/Libraries
+# Renamed 2025-02-26 before 6.0
+%rename %{oldlibname}
 
 %description -n %{libname}
 %{summary}.
@@ -122,13 +123,14 @@ Requires: cmake(absl)
 %{summary}.
 
 %prep
-%autosetup -n %{name}-%{commit0} -p1 -a 1
+%autosetup -n %{name}-%{commit0} -p1 
+#-a 1
 # Make sure nothing pulls in superfluous bundled libraries
 rm -rf src/third_party/libvpx cmake/libvpx.cmake src/third_party/openh264 cmake/libopenh264.cmake src/third_party/libyuv cmake/libyuv.cmake src/third_party/abseil-cpp cmake/libabsl.cmake
 #mv crc32c-*/* src/third_party/crc32c/src
 #rm -rf crc32c-*
-rmdir src/third_party/libsrtp
-mv libsrtp-* src/third_party/libsrtp
+#rmdir src/third_party/libsrtp
+#mv libsrtp-* src/third_party/libsrtp
 
 %build
 # CMAKE_BUILD_TYPE should always be Release due to some hardcoded checks.
