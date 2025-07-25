@@ -1,9 +1,8 @@
-diff -up tg_owt-dc17143230b5519f3c1a8da0079e00566bd4c5a8/CMakeLists.txt.2~ tg_owt-dc17143230b5519f3c1a8da0079e00566bd4c5a8/CMakeLists.txt
-diff -up tg_owt-dc17143230b5519f3c1a8da0079e00566bd4c5a8/cmake/external.cmake.2~ tg_owt-dc17143230b5519f3c1a8da0079e00566bd4c5a8/cmake/external.cmake
---- tg_owt-dc17143230b5519f3c1a8da0079e00566bd4c5a8/cmake/external.cmake.2~	2024-08-04 16:19:28.000000000 +0200
-+++ tg_owt-dc17143230b5519f3c1a8da0079e00566bd4c5a8/cmake/external.cmake	2024-08-04 21:11:50.650858678 +0200
-@@ -100,8 +100,8 @@ endfunction()
- function(link_libabsl target_name)
+diff -up tg_owt-62321fd7128ab2650b459d4195781af8185e46b5/cmake/external.cmake.2~ tg_owt-62321fd7128ab2650b459d4195781af8185e46b5/cmake/external.cmake
+--- tg_owt-62321fd7128ab2650b459d4195781af8185e46b5/cmake/external.cmake.2~	2025-06-03 07:20:04.000000000 +0200
++++ tg_owt-62321fd7128ab2650b459d4195781af8185e46b5/cmake/external.cmake	2025-07-26 01:02:09.891293951 +0200
+@@ -87,8 +87,8 @@ function(link_libabsl target_name)
+     endif()
      if (TG_OWT_PACKAGED_BUILD)
          find_package(absl)
 -        set(absl_FOUND ${absl_FOUND} PARENT_SCOPE)
@@ -11,5 +10,5 @@ diff -up tg_owt-dc17143230b5519f3c1a8da0079e00566bd4c5a8/cmake/external.cmake.2~
 +	set(absl_FOUND TRUE PARENT_SCOPE)
 +	if (TRUE)
              target_link_libraries(${target_name}
-             PUBLIC
+             ${scope}
                  absl::algorithm_container

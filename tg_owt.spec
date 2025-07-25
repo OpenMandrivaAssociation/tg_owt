@@ -1,6 +1,6 @@
-%global commit0 be39b8c8d0db1f377118f813f0c4bd331d341d5e
+%global commit0 62321fd7128ab2650b459d4195781af8185e46b5
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20241203
+%global date 20250603
 
 %define major 0
 %define libname %mklibname %{name}
@@ -9,7 +9,7 @@
 
 Name: tg_owt
 Version: 0
-Release: 3
+Release: 4
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
@@ -24,11 +24,11 @@ URL: https://github.com/desktop-app/tg_owt
 Source0: https://github.com/desktop-app/tg_owt/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
 #Source1: https://github.com/cisco/libsrtp/archive/refs/tags/v2.6.0.tar.gz
 
-Patch1: tg_owt-pipewire-compile.patch
+Patch1: https://github.com/desktop-app/tg_owt/pull/162.patch
 Patch2: tg_owt-system-yuv.patch
 Patch3: tg_owt-20211226-system-absl.patch
-# NOT YET -- tg_owt uses private headers
-#Patch5: tg_owt-system-srtp.patch
+Patch4: https://github.com/desktop-app/tg_owt/pull/161.patch
+#Patch5: https://github.com/desktop-app/tg_owt/pull/123.patch
 
 BuildRequires: pkgconfig(alsa)
 BuildRequires: pkgconfig(libavcodec)
