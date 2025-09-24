@@ -1,0 +1,381 @@
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/environment/environment.h.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/environment/environment.h
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/environment/environment.h.omv~	2025-09-24 17:08:12.218914963 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/environment/environment.h	2025-09-24 17:12:53.338436805 +0200
+@@ -99,10 +99,10 @@ class RTC_EXPORT Environment final {
+  private:
+   friend class EnvironmentFactory;
+   Environment(scoped_refptr<const rtc::RefCountedBase> storage,
+-              absl::Nonnull<const FieldTrialsView*> field_trials,
+-              absl::Nonnull<Clock*> clock,
+-              absl::Nonnull<TaskQueueFactory*> task_queue_factory,
+-              absl::Nonnull<RtcEventLog*> event_log)
++              const FieldTrialsView* _Nonnull field_trials,
++              Clock* _Nonnull clock,
++              TaskQueueFactory* _Nonnull task_queue_factory,
++              RtcEventLog* _Nonnull event_log)
+       : storage_(std::move(storage)),
+         field_trials_(field_trials),
+         clock_(clock),
+@@ -117,10 +117,10 @@ class RTC_EXPORT Environment final {
+   // `storage_` is alive.
+   scoped_refptr<const rtc::RefCountedBase> storage_;
+ 
+-  absl::Nonnull<const FieldTrialsView*> field_trials_;
+-  absl::Nonnull<Clock*> clock_;
+-  absl::Nonnull<TaskQueueFactory*> task_queue_factory_;
+-  absl::Nonnull<RtcEventLog*> event_log_;
++  const FieldTrialsView* _Nonnull field_trials_;
++  Clock* _Nonnull clock_;
++  TaskQueueFactory* _Nonnull task_queue_factory_;
++  RtcEventLog* _Nonnull event_log_;
+ };
+ 
+ //------------------------------------------------------------------------------
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/environment/environment_factory.cc.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/environment/environment_factory.cc
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/environment/environment_factory.cc.omv~	2025-09-24 17:19:29.376160403 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/environment/environment_factory.cc	2025-09-24 17:20:42.355681288 +0200
+@@ -25,12 +25,12 @@ namespace webrtc {
+ namespace {
+ 
+ template <typename T>
+-void Store(absl::Nonnull<std::unique_ptr<T>> value,
++void Store(std::unique_ptr<T> _Nonnull value,
+            scoped_refptr<const rtc::RefCountedBase>& leaf) {
+   class StorageNode : public rtc::RefCountedBase {
+    public:
+     StorageNode(scoped_refptr<const rtc::RefCountedBase> parent,
+-                absl::Nonnull<std::unique_ptr<T>> value)
++                std::unique_ptr<T> _Nonnull value)
+         : parent_(std::move(parent)), value_(std::move(value)) {}
+ 
+     StorageNode(const StorageNode&) = delete;
+@@ -40,7 +40,7 @@ void Store(absl::Nonnull<std::unique_ptr
+ 
+    private:
+     scoped_refptr<const rtc::RefCountedBase> parent_;
+-    absl::Nonnull<std::unique_ptr<T>> value_;
++    std::unique_ptr<T> _Nonnull value_;
+   };
+ 
+   // Utilities provided with ownership form a tree:
+@@ -63,14 +63,14 @@ EnvironmentFactory::EnvironmentFactory(c
+       event_log_(env.event_log_) {}
+ 
+ void EnvironmentFactory::Set(
+-    absl::Nullable<std::unique_ptr<const FieldTrialsView>> utility) {
++    std::unique_ptr<const FieldTrialsView> _Nullable utility) {
+   if (utility != nullptr) {
+     field_trials_ = utility.get();
+     Store(std::move(utility), leaf_);
+   }
+ }
+ 
+-void EnvironmentFactory::Set(absl::Nullable<std::unique_ptr<Clock>> utility) {
++void EnvironmentFactory::Set(std::unique_ptr<Clock> _Nullable utility) {
+   if (utility != nullptr) {
+     clock_ = utility.get();
+     Store(std::move(utility), leaf_);
+@@ -78,7 +78,7 @@ void EnvironmentFactory::Set(absl::Nulla
+ }
+ 
+ void EnvironmentFactory::Set(
+-    absl::Nullable<std::unique_ptr<TaskQueueFactory>> utility) {
++    std::unique_ptr<TaskQueueFactory> _Nullable utility) {
+   if (utility != nullptr) {
+     task_queue_factory_ = utility.get();
+     Store(std::move(utility), leaf_);
+@@ -86,7 +86,7 @@ void EnvironmentFactory::Set(
+ }
+ 
+ void EnvironmentFactory::Set(
+-    absl::Nullable<std::unique_ptr<RtcEventLog>> utility) {
++    std::unique_ptr<RtcEventLog> _Nullable utility) {
+   if (utility != nullptr) {
+     event_log_ = utility.get();
+     Store(std::move(utility), leaf_);
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/environment/environment_factory.h.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/environment/environment_factory.h
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/environment/environment_factory.h.omv~	2025-09-24 17:08:52.335249068 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/environment/environment_factory.h	2025-09-24 17:15:21.269567394 +0200
+@@ -54,15 +54,15 @@ class RTC_EXPORT EnvironmentFactory fina
+ 
+   ~EnvironmentFactory() = default;
+ 
+-  void Set(absl::Nullable<std::unique_ptr<const FieldTrialsView>> utility);
+-  void Set(absl::Nullable<std::unique_ptr<Clock>> utility);
+-  void Set(absl::Nullable<std::unique_ptr<TaskQueueFactory>> utility);
+-  void Set(absl::Nullable<std::unique_ptr<RtcEventLog>> utility);
+-
+-  void Set(absl::Nullable<const FieldTrialsView*> utility);
+-  void Set(absl::Nullable<Clock*> utility);
+-  void Set(absl::Nullable<TaskQueueFactory*> utility);
+-  void Set(absl::Nullable<RtcEventLog*> utility);
++  void Set(std::unique_ptr<const FieldTrialsView> _Nullable utility);
++  void Set(std::unique_ptr<Clock> _Nullable utility);
++  void Set(std::unique_ptr<TaskQueueFactory> _Nullable utility);
++  void Set(std::unique_ptr<RtcEventLog> _Nullable utility);
++
++  void Set(const FieldTrialsView* _Nullable utility);
++  void Set(Clock* _Nullable utility);
++  void Set(TaskQueueFactory* _Nullable utility);
++  void Set(RtcEventLog* _Nullable utility);
+ 
+   Environment Create() const;
+ 
+@@ -71,10 +71,10 @@ class RTC_EXPORT EnvironmentFactory fina
+ 
+   scoped_refptr<const rtc::RefCountedBase> leaf_;
+ 
+-  absl::Nullable<const FieldTrialsView*> field_trials_ = nullptr;
+-  absl::Nullable<Clock*> clock_ = nullptr;
+-  absl::Nullable<TaskQueueFactory*> task_queue_factory_ = nullptr;
+-  absl::Nullable<RtcEventLog*> event_log_ = nullptr;
++  const FieldTrialsView* _Nullable field_trials_ = nullptr;
++  Clock* _Nullable clock_ = nullptr;
++  TaskQueueFactory* _Nullable task_queue_factory_ = nullptr;
++  RtcEventLog* _Nullable event_log_ = nullptr;
+ };
+ 
+ // Helper for concise way to create an environment.
+@@ -97,25 +97,25 @@ Environment CreateEnvironment(Utilities&
+ //------------------------------------------------------------------------------
+ 
+ inline void EnvironmentFactory::Set(
+-    absl::Nullable<const FieldTrialsView*> utility) {
++    const FieldTrialsView* _Nullable utility) {
+   if (utility != nullptr) {
+     field_trials_ = utility;
+   }
+ }
+ 
+-inline void EnvironmentFactory::Set(absl::Nullable<Clock*> utility) {
++inline void EnvironmentFactory::Set(Clock* _Nullable utility) {
+   if (utility != nullptr) {
+     clock_ = utility;
+   }
+ }
+ 
+-inline void EnvironmentFactory::Set(absl::Nullable<TaskQueueFactory*> utility) {
++inline void EnvironmentFactory::Set(TaskQueueFactory* _Nullable utility) {
+   if (utility != nullptr) {
+     task_queue_factory_ = utility;
+   }
+ }
+ 
+-inline void EnvironmentFactory::Set(absl::Nullable<RtcEventLog*> utility) {
++inline void EnvironmentFactory::Set(RtcEventLog* _Nullable utility) {
+   if (utility != nullptr) {
+     event_log_ = utility;
+   }
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/rtc_event_log/rtc_event_log_factory.cc.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/rtc_event_log/rtc_event_log_factory.cc
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/rtc_event_log/rtc_event_log_factory.cc.omv~	2025-09-24 18:11:11.859283180 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/rtc_event_log/rtc_event_log_factory.cc	2025-09-24 18:11:22.041509619 +0200
+@@ -23,7 +23,7 @@
+ 
+ namespace webrtc {
+ 
+-absl::Nonnull<std::unique_ptr<RtcEventLog>> RtcEventLogFactory::Create(
++std::unique_ptr<RtcEventLog> _Nonnull RtcEventLogFactory::Create(
+     const Environment& env) const {
+ #ifndef WEBRTC_ENABLE_RTC_EVENT_LOG
+   return std::make_unique<RtcEventLogNull>();
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/rtc_event_log/rtc_event_log_factory.h.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/rtc_event_log/rtc_event_log_factory.h
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/rtc_event_log/rtc_event_log_factory.h.omv~	2025-09-24 17:21:10.743206668 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/rtc_event_log/rtc_event_log_factory.h	2025-09-24 17:21:22.357776776 +0200
+@@ -31,7 +31,7 @@ class RTC_EXPORT RtcEventLogFactory : pu
+ 
+   ~RtcEventLogFactory() override = default;
+ 
+-  absl::Nonnull<std::unique_ptr<RtcEventLog>> Create(
++  std::unique_ptr<RtcEventLog> _Nonnull Create(
+       const Environment& env) const override;
+ };
+ 
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/rtc_event_log/rtc_event_log_factory_interface.h.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/rtc_event_log/rtc_event_log_factory_interface.h
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/rtc_event_log/rtc_event_log_factory_interface.h.omv~	2025-09-24 17:14:14.425133797 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/rtc_event_log/rtc_event_log_factory_interface.h	2025-09-24 17:14:24.043357389 +0200
+@@ -26,7 +26,7 @@ class RtcEventLogFactoryInterface {
+  public:
+   virtual ~RtcEventLogFactoryInterface() = default;
+ 
+-  virtual absl::Nonnull<std::unique_ptr<RtcEventLog>> Create(
++  virtual std::unique_ptr<RtcEventLog> _Nonnull Create(
+       const Environment& env) const = 0;
+ };
+ 
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/task_queue/pending_task_safety_flag.cc.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/task_queue/pending_task_safety_flag.cc
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/task_queue/pending_task_safety_flag.cc.omv~	2025-09-24 17:21:59.478636530 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/task_queue/pending_task_safety_flag.cc	2025-09-24 17:22:09.574790714 +0200
+@@ -37,7 +37,7 @@ PendingTaskSafetyFlag::CreateDetached()
+ rtc::scoped_refptr<PendingTaskSafetyFlag>
+ PendingTaskSafetyFlag::CreateAttachedToTaskQueue(
+     bool alive,
+-    absl::Nonnull<TaskQueueBase*> attached_queue) {
++    TaskQueueBase* _Nonnull attached_queue) {
+   RTC_DCHECK(attached_queue) << "Null TaskQueue provided";
+   return rtc::scoped_refptr<PendingTaskSafetyFlag>(
+       new PendingTaskSafetyFlag(alive, attached_queue));
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/task_queue/pending_task_safety_flag.h.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/task_queue/pending_task_safety_flag.h
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/task_queue/pending_task_safety_flag.h.omv~	2025-09-24 17:07:19.067418297 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/api/task_queue/pending_task_safety_flag.h	2025-09-24 17:07:41.688192681 +0200
+@@ -73,7 +73,7 @@ class RTC_EXPORT PendingTaskSafetyFlag f
+   // a given task queue and the `alive()` flag specified.
+   static rtc::scoped_refptr<PendingTaskSafetyFlag> CreateAttachedToTaskQueue(
+       bool alive,
+-      absl::Nonnull<TaskQueueBase*> attached_queue);
++      TaskQueueBase* _Nonnull attached_queue);
+ 
+   // Same as `CreateDetached()` except the initial state of the returned flag
+   // will be `!alive()`.
+@@ -103,7 +103,7 @@ class RTC_EXPORT PendingTaskSafetyFlag f
+  protected:
+   explicit PendingTaskSafetyFlag(bool alive) : alive_(alive) {}
+   PendingTaskSafetyFlag(bool alive,
+-                        absl::Nonnull<TaskQueueBase*> attached_queue)
++                        TaskQueueBase* _Nonnull attached_queue)
+       : alive_(alive), main_sequence_(attached_queue) {}
+ 
+  private:
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/logging/rtc_event_log/fake_rtc_event_log_factory.cc.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/logging/rtc_event_log/fake_rtc_event_log_factory.cc
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/logging/rtc_event_log/fake_rtc_event_log_factory.cc.omv~	2025-09-24 23:36:41.579780996 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/logging/rtc_event_log/fake_rtc_event_log_factory.cc	2025-09-24 23:36:49.563147712 +0200
+@@ -17,7 +17,7 @@
+ 
+ namespace webrtc {
+ 
+-absl::Nonnull<std::unique_ptr<RtcEventLog>> FakeRtcEventLogFactory::Create(
++std::unique_ptr<RtcEventLog> _Nonnull FakeRtcEventLogFactory::Create(
+     const Environment& /*env*/) const {
+   auto fake_event_log = std::make_unique<FakeRtcEventLog>();
+   const_cast<FakeRtcEventLog*&>(last_log_created_) = fake_event_log.get();
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/logging/rtc_event_log/fake_rtc_event_log_factory.h.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/logging/rtc_event_log/fake_rtc_event_log_factory.h
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/logging/rtc_event_log/fake_rtc_event_log_factory.h.omv~	2025-09-24 23:36:29.878899007 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/logging/rtc_event_log/fake_rtc_event_log_factory.h	2025-09-24 23:36:39.644914007 +0200
+@@ -25,7 +25,7 @@ class FakeRtcEventLogFactory : public Rt
+   FakeRtcEventLogFactory() = default;
+   ~FakeRtcEventLogFactory() override = default;
+ 
+-  absl::Nonnull<std::unique_ptr<RtcEventLog>> Create(
++  std::unique_ptr<RtcEventLog> _Nonnull Create(
+       const Environment& env) const override;
+ 
+   FakeRtcEventLog* last_log_created() { return last_log_created_; }
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/aec_dump/aec_dump_factory.h.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/aec_dump/aec_dump_factory.h
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/aec_dump/aec_dump_factory.h.omv~	2025-09-24 18:13:17.179001840 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/aec_dump/aec_dump_factory.h	2025-09-24 18:14:39.400011075 +0200
+@@ -29,18 +29,18 @@ class RTC_EXPORT AecDumpFactory {
+   // The AecDump takes responsibility for `handle` and closes it in the
+   // destructor. A non-null return value indicates that the file has been
+   // sucessfully opened.
+-  static absl::Nullable<std::unique_ptr<AecDump>> Create(
++  static std::unique_ptr<AecDump> _Nullable Create(
+       FileWrapper file,
+       int64_t max_log_size_bytes,
+-      absl::Nonnull<TaskQueueBase*> worker_queue);
+-  static absl::Nullable<std::unique_ptr<AecDump>> Create(
++      TaskQueueBase* _Nonnull worker_queue);
++  static std::unique_ptr<AecDump> _Nullable Create(
+       absl::string_view file_name,
+       int64_t max_log_size_bytes,
+-      absl::Nonnull<TaskQueueBase*> worker_queue);
+-  static absl::Nullable<std::unique_ptr<AecDump>> Create(
+-      absl::Nonnull<FILE*> handle,
++      TaskQueueBase* _Nonnull worker_queue);
++  static std::unique_ptr<AecDump> _Nullable Create(
++      FILE* _Nonnull handle,
+       int64_t max_log_size_bytes,
+-      absl::Nonnull<TaskQueueBase*> worker_queue);
++      TaskQueueBase* _Nonnull worker_queue);
+ };
+ 
+ }  // namespace webrtc
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/aec_dump/null_aec_dump_factory.cc.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/aec_dump/null_aec_dump_factory.cc
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/aec_dump/null_aec_dump_factory.cc.omv~	2025-09-24 17:22:19.443488466 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/aec_dump/null_aec_dump_factory.cc	2025-09-24 18:17:14.568156224 +0200
+@@ -16,24 +16,24 @@
+ 
+ namespace webrtc {
+ 
+-absl::Nullable<std::unique_ptr<AecDump>> AecDumpFactory::Create(
++std::unique_ptr<AecDump> _Nullable AecDumpFactory::Create(
+     FileWrapper file,
+     int64_t max_log_size_bytes,
+-    absl::Nonnull<TaskQueueBase*> worker_queue) {
++    TaskQueueBase* _Nonnull worker_queue) {
+   return nullptr;
+ }
+ 
+-absl::Nullable<std::unique_ptr<AecDump>> AecDumpFactory::Create(
++std::unique_ptr<AecDump> _Nullable AecDumpFactory::Create(
+     absl::string_view file_name,
+     int64_t max_log_size_bytes,
+-    absl::Nonnull<TaskQueueBase*> worker_queue) {
++    TaskQueueBase* _Nonnull worker_queue) {
+   return nullptr;
+ }
+ 
+-absl::Nullable<std::unique_ptr<AecDump>> AecDumpFactory::Create(
+-    absl::Nonnull<FILE*> handle,
++std::unique_ptr<AecDump> _Nullable AecDumpFactory::Create(
++    FILE* _Nonnull handle,
+     int64_t max_log_size_bytes,
+-    absl::Nonnull<TaskQueueBase*> worker_queue) {
++    TaskQueueBase* _Nonnull worker_queue) {
+   return nullptr;
+ }
+ }  // namespace webrtc
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/audio_processing_impl.cc.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/audio_processing_impl.cc
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/audio_processing_impl.cc.omv~	2025-09-24 18:11:31.649096665 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/audio_processing_impl.cc	2025-09-24 18:11:53.497816152 +0200
+@@ -2087,7 +2087,7 @@ void AudioProcessingImpl::UpdateRecommen
+ bool AudioProcessingImpl::CreateAndAttachAecDump(
+     absl::string_view file_name,
+     int64_t max_log_size_bytes,
+-    absl::Nonnull<TaskQueueBase*> worker_queue) {
++    TaskQueueBase* _Nonnull worker_queue) {
+   std::unique_ptr<AecDump> aec_dump =
+       AecDumpFactory::Create(file_name, max_log_size_bytes, worker_queue);
+   if (!aec_dump) {
+@@ -2101,7 +2101,7 @@ bool AudioProcessingImpl::CreateAndAttac
+ bool AudioProcessingImpl::CreateAndAttachAecDump(
+     FILE* handle,
+     int64_t max_log_size_bytes,
+-    absl::Nonnull<TaskQueueBase*> worker_queue) {
++    TaskQueueBase* _Nonnull worker_queue) {
+   std::unique_ptr<AecDump> aec_dump =
+       AecDumpFactory::Create(handle, max_log_size_bytes, worker_queue);
+   if (!aec_dump) {
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/audio_processing_impl.h.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/audio_processing_impl.h
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/audio_processing_impl.h.omv~	2025-09-24 18:10:07.575656953 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/audio_processing_impl.h	2025-09-24 18:10:29.121114431 +0200
+@@ -76,11 +76,11 @@ class AudioProcessingImpl : public Audio
+   bool CreateAndAttachAecDump(
+       absl::string_view file_name,
+       int64_t max_log_size_bytes,
+-      absl::Nonnull<TaskQueueBase*> worker_queue) override;
++      TaskQueueBase* _Nonnull worker_queue) override;
+   bool CreateAndAttachAecDump(
+       FILE* handle,
+       int64_t max_log_size_bytes,
+-      absl::Nonnull<TaskQueueBase*> worker_queue) override;
++      TaskQueueBase* _Nonnull worker_queue) override;
+   // TODO(webrtc:5298) Deprecated variant.
+   void AttachAecDump(std::unique_ptr<AecDump> aec_dump) override;
+   void DetachAecDump() override;
+diff -up tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/include/audio_processing.h.omv~ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/include/audio_processing.h
+--- tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/include/audio_processing.h.omv~	2025-09-24 17:11:43.082872130 +0200
++++ tg_owt-5c5c71258777d0196dbb3a09cc37d2f56ead28ab/src/modules/audio_processing/include/audio_processing.h	2025-09-24 17:12:15.160022590 +0200
+@@ -633,11 +633,11 @@ class RTC_EXPORT AudioProcessing : publi
+   virtual bool CreateAndAttachAecDump(
+       absl::string_view file_name,
+       int64_t max_log_size_bytes,
+-      absl::Nonnull<TaskQueueBase*> worker_queue) = 0;
++      TaskQueueBase* _Nonnull worker_queue) = 0;
+   virtual bool CreateAndAttachAecDump(
+-      absl::Nonnull<FILE*> handle,
++      FILE* _Nonnull handle,
+       int64_t max_log_size_bytes,
+-      absl::Nonnull<TaskQueueBase*> worker_queue) = 0;
++      TaskQueueBase* _Nonnull worker_queue) = 0;
+ 
+   // TODO(webrtc:5298) Deprecated variant.
+   // Attaches provided webrtc::AecDump for recording debugging

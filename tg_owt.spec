@@ -9,7 +9,7 @@
 
 Name: tg_owt
 Version: 0.0~%{date}
-Release: 1
+Release: 2
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
@@ -29,6 +29,7 @@ Patch2: tg_owt-system-yuv.patch
 Patch3: tg_owt-20211226-system-absl.patch
 Patch4: https://github.com/desktop-app/tg_owt/pull/161.patch
 #Patch5: https://github.com/desktop-app/tg_owt/pull/123.patch
+Patch6: tg_owt-absl-25.08.patch
 
 BuildRequires: pkgconfig(alsa)
 BuildRequires: pkgconfig(libavcodec)
