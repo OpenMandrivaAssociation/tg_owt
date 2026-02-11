@@ -1,6 +1,6 @@
-%global commit0 5c5c71258777d0196dbb3a09cc37d2f56ead28ab
+%global commit0 d888bc3f79b4aa80333d8903410fa439db5f6696
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20250914
+%global date 20251212
 
 %define major 0
 %define libname %mklibname %{name}
@@ -9,7 +9,7 @@
 
 Name: tg_owt
 Version: 0.0~%{date}
-Release: 2
+Release: 1
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
