@@ -1,6 +1,6 @@
-%global commit0 d888bc3f79b4aa80333d8903410fa439db5f6696
+%global commit0 89df288dd6ba5b2ec95b3c5eaf1e7e0c3a870fc4
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20251212
+%global date 20260409
 
 %define major 0
 %define libname %mklibname %{name}
@@ -9,7 +9,7 @@
 
 Name: tg_owt
 Version: 0.0~%{date}
-Release: 2
+Release: 1
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
@@ -24,7 +24,7 @@ URL: https://github.com/desktop-app/tg_owt
 Source0: https://github.com/desktop-app/tg_owt/archive/%{commit0}/%{name}-%{shortcommit0}.tar.gz
 #Source1: https://github.com/cisco/libsrtp/archive/refs/tags/v2.6.0.tar.gz
 
-Patch1: https://github.com/desktop-app/tg_owt/pull/162.patch
+Patch1: tg_owt-openssl-4.x.patch
 Patch2: tg_owt-system-yuv.patch
 Patch3: tg_owt-20211226-system-absl.patch
 Patch4: https://github.com/desktop-app/tg_owt/pull/161.patch

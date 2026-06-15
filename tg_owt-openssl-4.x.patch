@@ -1,0 +1,52 @@
+commit c405e3a237f458e7f5fd434217cdc95009ba432c
+Author: Bernhard Rosenkränzer <bero@lindev.ch>
+Date:   Mon Jun 15 15:32:49 2026 +0200
+
+    Fix OpenSSL 4.x (and 3.x) compatibility for ASN1_TIME access
+    
+    Direct struct member access on ASN1_TIME (typedef to opaque asn1_string_st)
+    fails to compile against OpenSSL 4.x headers (and is not guaranteed on 3.x).
+    
+    Use the stable public accessors ASN1_STRING_type, ASN1_STRING_length and
+    ASN1_STRING_get0_data instead of ->type / ->data / ->length.
+    
+    This was the root cause of 'ninja -C build' failing when the system
+    provides OpenSSL 4.0.1 (or equivalent).
+
+diff --git a/src/rtc_base/openssl_certificate.cc b/src/rtc_base/openssl_certificate.cc
+index faed72b..14a99ff 100644
+--- a/src/rtc_base/openssl_certificate.cc
++++ b/src/rtc_base/openssl_certificate.cc
+@@ -15,6 +15,7 @@
+ #include "rtc_base/win32.h"  // NOLINT
+ #endif                       // WEBRTC_WIN
+ 
++#include <openssl/asn1.h>
+ #include <openssl/bio.h>
+ #include <openssl/bn.h>
+ #include <openssl/pem.h>
+@@ -276,15 +277,21 @@ bool OpenSSLCertificate::operator!=(const OpenSSLCertificate& other) const {
+ 
+ int64_t OpenSSLCertificate::CertificateExpirationTime() const {
+   ASN1_TIME* expire_time = X509_get_notAfter(x509_);
++  if (expire_time == nullptr) {
++    return -1;
++  }
++  int type = ASN1_STRING_type(expire_time);
+   bool long_format;
+-  if (expire_time->type == V_ASN1_UTCTIME) {
++  if (type == V_ASN1_UTCTIME) {
+     long_format = false;
+-  } else if (expire_time->type == V_ASN1_GENERALIZEDTIME) {
++  } else if (type == V_ASN1_GENERALIZEDTIME) {
+     long_format = true;
+   } else {
+     return -1;
+   }
+-  return ASN1TimeToSec(expire_time->data, expire_time->length, long_format);
++  const unsigned char* data = ASN1_STRING_get0_data(expire_time);
++  int len = ASN1_STRING_length(expire_time);
++  return ASN1TimeToSec(data, static_cast<size_t>(len), long_format);
+ }
+ 
+ }  // namespace rtc
