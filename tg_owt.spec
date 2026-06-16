@@ -9,7 +9,7 @@
 
 Name: tg_owt
 Version: 0.0~%{date}
-Release: 1
+Release: 2
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
@@ -118,6 +118,7 @@ Requires: pkgconfig(xrender)
 Requires: pkgconfig(xrandr)
 Requires: pkgconfig(xtst)
 Requires: pkgconfig(libpipewire-0.3)
+Requires: pkgconfig(gio-2.0)
 Requires: cmake(absl)
 
 %description -n %{devname}
