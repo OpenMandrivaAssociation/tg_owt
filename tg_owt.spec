@@ -1,6 +1,6 @@
-%global commit0 ec71c06aaaed1cfda8669d51cf3b8d5b447b2031
+%global commit0 020feec5c040fdae2cf752c2c2be62ddde7c236d
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20261023
+%global date 20261030
 
 %define major 0
 %define libname %mklibname %{name}
@@ -25,7 +25,7 @@ Source0: https://github.com/desktop-app/tg_owt/archive/%{commit0}/%{name}-%{shor
 #Source1: https://github.com/cisco/libsrtp/archive/refs/tags/v2.6.0.tar.gz
 
 # OpenSSL 4 ASN.1 accessors and the GCC 16 cstdint include are upstream
-# as of ec71c06, the snapshot Telegram Desktop 7.3.4 pins.
+# as of ec71c06. 020feec is the snapshot Telegram Desktop 7.4.0 pins.
 Patch2: tg_owt-system-yuv.patch
 Patch3: tg_owt-20211226-system-absl.patch
 #Patch5: https://github.com/desktop-app/tg_owt/pull/123.patch
