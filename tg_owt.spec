@@ -1,6 +1,6 @@
-%global commit0 020feec5c040fdae2cf752c2c2be62ddde7c236d
+%global commit0 642ddb107b42da7c8d152401b71cd429475e5266
 %global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-%global date 20261030
+%global date 20261116
 
 %define major 0
 %define libname %mklibname %{name}
@@ -9,7 +9,7 @@
 
 Name: tg_owt
 Version: 0.0~%{date}
-Release: 2
+Release: 1
 
 # Main project - BSD
 # abseil-cpp - ASL 2.0
@@ -25,7 +25,7 @@ Source0: https://github.com/desktop-app/tg_owt/archive/%{commit0}/%{name}-%{shor
 #Source1: https://github.com/cisco/libsrtp/archive/refs/tags/v2.6.0.tar.gz
 
 # OpenSSL 4 ASN.1 accessors and the GCC 16 cstdint include are upstream
-# as of ec71c06. 020feec is the snapshot Telegram Desktop 7.4.0 pins.
+# as of ec71c06. 642ddb1 is the snapshot paired with Telegram Desktop 7.4.5.
 Patch2: tg_owt-system-yuv.patch
 Patch3: tg_owt-20211226-system-absl.patch
 #Patch5: https://github.com/desktop-app/tg_owt/pull/123.patch
